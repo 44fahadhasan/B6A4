@@ -4,6 +4,7 @@ import { admin } from "better-auth/plugins";
 import config from "../config";
 import { allowedOrigins } from "../config/cors";
 import { prisma } from "../config/prisma";
+import UserRole from "../constants/user.roles";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, { provider: "postgresql" }),
@@ -13,5 +14,18 @@ export const auth = betterAuth({
   trustedOrigins: allowedOrigins,
   advanced: { cookiePrefix: config.site_name },
   emailAndPassword: { enabled: true, autoSignIn: false },
-  plugins: [admin()],
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: UserRole.customer,
+      },
+    },
+  },
+  plugins: [
+    admin({
+      defaultRole: UserRole.customer,
+    }),
+  ],
 });
