@@ -14,4 +14,8 @@ export default {
 
   // Database
   connection_string: process.env.CONNECTION_STRING,
+
+  // Better auth
+  better_auth_secret: process.env.BETTER_AUTH_SECRET,
+  better_auth_url: process.env.BETTER_AUTH_URL,
 };
