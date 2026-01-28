@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import sendResponse from "../../utils/sendResponse";
+import sendResponse from "../../utils/send-response.util";
 import { sellerService } from "./seller.service";
 
 const singUpSeller = async (
@@ -11,7 +11,7 @@ const singUpSeller = async (
     const data = await sellerService.singUpSeller(req.body);
     sendResponse(res, {
       statusCode: 201,
-      message: "Singup success!",
+      message: "Singup successful!",
       data,
     });
   } catch (error) {

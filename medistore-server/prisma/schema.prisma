@@ -13,8 +13,14 @@ enum UserRole {
   admin
 }
 
+enum Status {
+  draft
+  archived
+  published
+}
+
 model User {
-  id            String    @id
+  id            String    @id @default(ulid())
   name          String
   email         String
   emailVerified Boolean   @default(false)
@@ -29,11 +35,11 @@ model User {
   banReason  String?
   banExpires DateTime?
 
-  @@map("user")
+  @@map("users")
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(ulid())
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
@@ -47,11 +53,11 @@ model Session {
 
   @@unique([token])
   @@index([userId])
-  @@map("session")
+  @@map("sessions")
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(ulid())
   accountId             String
   providerId            String
   userId                String
@@ -67,11 +73,11 @@ model Account {
   updatedAt             DateTime  @updatedAt
 
   @@index([userId])
-  @@map("account")
+  @@map("accounts")
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(ulid())
   identifier String
   value      String
   expiresAt  DateTime
@@ -79,5 +85,24 @@ model Verification {
   updatedAt  DateTime @updatedAt
 
   @@index([identifier])
-  @@map("verification")
+  @@map("verifications")
+}
+
+model Categorie {
+  id          String  @id @default(ulid())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  image       String?
+  status      Status  @default(published)
+
+  parentId String?
+  parent   Categorie?  @relation("CategorieHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children Categorie[] @relation("CategorieHierarchy")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@map("categories")
 }
