@@ -11,8 +11,18 @@ export const Permission = {
 
 const statement = {
   ...defaultStatements,
-  [UserRole.customer]: [Permission.VIEW],
-  [UserRole.seller]: [Permission.VIEW, Permission.ADD, Permission.EDIT],
+  [UserRole.customer]: [
+    Permission.VIEW,
+    Permission.ADD,
+    Permission.EDIT,
+    Permission.DELETE,
+  ],
+  [UserRole.seller]: [
+    Permission.VIEW,
+    Permission.ADD,
+    Permission.EDIT,
+    Permission.DELETE,
+  ],
   [UserRole.admin]: [
     Permission.VIEW,
     Permission.ADD,
@@ -24,14 +34,29 @@ const statement = {
 export const ac = createAccessControl(statement);
 
 export const customerRole = ac.newRole({
-  [UserRole.customer]: ["view"],
+  [UserRole.customer]: [
+    Permission.VIEW,
+    Permission.ADD,
+    Permission.EDIT,
+    Permission.DELETE,
+  ],
 });
 
 export const sellerRole = ac.newRole({
-  [UserRole.seller]: ["add", "edit", "view"],
+  [UserRole.seller]: [
+    Permission.VIEW,
+    Permission.ADD,
+    Permission.EDIT,
+    Permission.DELETE,
+  ],
 });
 
 export const adminRole = ac.newRole({
   ...adminAc.statements,
-  [UserRole.admin]: ["add", "edit", "delete", "view"],
+  [UserRole.admin]: [
+    Permission.VIEW,
+    Permission.ADD,
+    Permission.EDIT,
+    Permission.DELETE,
+  ],
 });
