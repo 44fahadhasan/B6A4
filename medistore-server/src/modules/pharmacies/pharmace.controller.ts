@@ -1,18 +1,18 @@
 import type { NextFunction, Request, Response } from "express";
 import sendResponse from "../../utils/send-response.util";
-import { sellerService } from "./seller.service";
+import { pharmaceService } from "./pharmace.service";
 
-const singUpSeller = async (
+const pharmaceProfile = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const data = await sellerService.singUpSeller(req.body);
+    const data = await pharmaceService.pharmaceProfile(req.body);
 
     sendResponse(res, {
       statusCode: 201,
-      message: "Singup successful!",
+      message: "Pharmacy profile saved successful!",
       data,
     });
   } catch (error) {
@@ -20,6 +20,6 @@ const singUpSeller = async (
   }
 };
 
-export const sellerController = {
-  singUpSeller,
+export const pharmaceController = {
+  pharmaceProfile,
 };

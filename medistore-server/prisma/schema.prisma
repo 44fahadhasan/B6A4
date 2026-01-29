@@ -208,7 +208,7 @@ model Pharmacie {
   @@index([email])
   @@index([status])
   @@index([phoneNumber])
-  @@map("Pharmacies")
+  @@map("pharmacies")
 }
 
 model Categorie {

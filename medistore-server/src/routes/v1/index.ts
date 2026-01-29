@@ -1,5 +1,7 @@
 import { Router, type IRouter } from "express";
 import categorieRouter from "../../modules/categories/categorie.route";
+import medicineRouter from "../../modules/medicines/medicine.route";
+import pharmaceRouter from "../../modules/pharmacies/pharmace.route";
 import sellerRouter from "../../modules/sellers/seller.route";
 
 interface IModuleRouter {
@@ -12,6 +14,8 @@ const v1Router = Router();
 const moduleRouters: IModuleRouter[] = [
   { path: "/seller", router: sellerRouter },
   { path: "/categories", router: categorieRouter },
+  { path: "/pharmaces", router: pharmaceRouter },
+  { path: "/medicines", router: medicineRouter },
 ];
 
 moduleRouters.forEach(({ path, router }) => v1Router.use(path, router));
