@@ -60,7 +60,52 @@ export type Account = Prisma.AccountModel
  */
 export type Verification = Prisma.VerificationModel
 /**
+ * Model DeliveryAddress
+ * 
+ */
+export type DeliveryAddress = Prisma.DeliveryAddressModel
+/**
+ * Model Pharmacie
+ * 
+ */
+export type Pharmacie = Prisma.PharmacieModel
+/**
  * Model Categorie
  * 
  */
 export type Categorie = Prisma.CategorieModel
+/**
+ * Model Medicine
+ * 
+ */
+export type Medicine = Prisma.MedicineModel
+/**
+ * Model Inventory
+ * 
+ */
+export type Inventory = Prisma.InventoryModel
+/**
+ * Model CartItem
+ * 
+ */
+export type CartItem = Prisma.CartItemModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model OrderItem
+ * 
+ */
+export type OrderItem = Prisma.OrderItemModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel

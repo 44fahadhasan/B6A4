@@ -31,6 +31,7 @@ export type CategorieMinAggregateOutputType = {
   description: string | null
   image: string | null
   status: $Enums.Status | null
+  isFeatured: boolean | null
   parentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +44,7 @@ export type CategorieMaxAggregateOutputType = {
   description: string | null
   image: string | null
   status: $Enums.Status | null
+  isFeatured: boolean | null
   parentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +57,7 @@ export type CategorieCountAggregateOutputType = {
   description: number
   image: number
   status: number
+  isFeatured: number
   parentId: number
   createdAt: number
   updatedAt: number
@@ -69,6 +72,7 @@ export type CategorieMinAggregateInputType = {
   description?: true
   image?: true
   status?: true
+  isFeatured?: true
   parentId?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +85,7 @@ export type CategorieMaxAggregateInputType = {
   description?: true
   image?: true
   status?: true
+  isFeatured?: true
   parentId?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +98,7 @@ export type CategorieCountAggregateInputType = {
   description?: true
   image?: true
   status?: true
+  isFeatured?: true
   parentId?: true
   createdAt?: true
   updatedAt?: true
@@ -178,6 +184,7 @@ export type CategorieGroupByOutputType = {
   description: string | null
   image: string | null
   status: $Enums.Status
+  isFeatured: boolean
   parentId: string | null
   createdAt: Date
   updatedAt: Date
@@ -211,11 +218,13 @@ export type CategorieWhereInput = {
   description?: Prisma.StringNullableFilter<"Categorie"> | string | null
   image?: Prisma.StringNullableFilter<"Categorie"> | string | null
   status?: Prisma.EnumStatusFilter<"Categorie"> | $Enums.Status
+  isFeatured?: Prisma.BoolFilter<"Categorie"> | boolean
   parentId?: Prisma.StringNullableFilter<"Categorie"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Categorie"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Categorie"> | Date | string
   parent?: Prisma.XOR<Prisma.CategorieNullableScalarRelationFilter, Prisma.CategorieWhereInput> | null
   children?: Prisma.CategorieListRelationFilter
+  medicines?: Prisma.MedicineListRelationFilter
 }
 
 export type CategorieOrderByWithRelationInput = {
@@ -225,11 +234,13 @@ export type CategorieOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   parent?: Prisma.CategorieOrderByWithRelationInput
   children?: Prisma.CategorieOrderByRelationAggregateInput
+  medicines?: Prisma.MedicineOrderByRelationAggregateInput
 }
 
 export type CategorieWhereUniqueInput = Prisma.AtLeast<{
@@ -242,11 +253,13 @@ export type CategorieWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Categorie"> | string | null
   image?: Prisma.StringNullableFilter<"Categorie"> | string | null
   status?: Prisma.EnumStatusFilter<"Categorie"> | $Enums.Status
+  isFeatured?: Prisma.BoolFilter<"Categorie"> | boolean
   parentId?: Prisma.StringNullableFilter<"Categorie"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Categorie"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Categorie"> | Date | string
   parent?: Prisma.XOR<Prisma.CategorieNullableScalarRelationFilter, Prisma.CategorieWhereInput> | null
   children?: Prisma.CategorieListRelationFilter
+  medicines?: Prisma.MedicineListRelationFilter
 }, "id" | "name" | "slug">
 
 export type CategorieOrderByWithAggregationInput = {
@@ -256,6 +269,7 @@ export type CategorieOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -274,6 +288,7 @@ export type CategorieScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Categorie"> | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"Categorie"> | string | null
   status?: Prisma.EnumStatusWithAggregatesFilter<"Categorie"> | $Enums.Status
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"Categorie"> | boolean
   parentId?: Prisma.StringNullableWithAggregatesFilter<"Categorie"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Categorie"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Categorie"> | Date | string
@@ -286,10 +301,12 @@ export type CategorieCreateInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   parent?: Prisma.CategorieCreateNestedOneWithoutChildrenInput
   children?: Prisma.CategorieCreateNestedManyWithoutParentInput
+  medicines?: Prisma.MedicineCreateNestedManyWithoutCategorieInput
 }
 
 export type CategorieUncheckedCreateInput = {
@@ -299,10 +316,12 @@ export type CategorieUncheckedCreateInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   parentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   children?: Prisma.CategorieUncheckedCreateNestedManyWithoutParentInput
+  medicines?: Prisma.MedicineUncheckedCreateNestedManyWithoutCategorieInput
 }
 
 export type CategorieUpdateInput = {
@@ -312,10 +331,12 @@ export type CategorieUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   parent?: Prisma.CategorieUpdateOneWithoutChildrenNestedInput
   children?: Prisma.CategorieUpdateManyWithoutParentNestedInput
+  medicines?: Prisma.MedicineUpdateManyWithoutCategorieNestedInput
 }
 
 export type CategorieUncheckedUpdateInput = {
@@ -325,10 +346,12 @@ export type CategorieUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.CategorieUncheckedUpdateManyWithoutParentNestedInput
+  medicines?: Prisma.MedicineUncheckedUpdateManyWithoutCategorieNestedInput
 }
 
 export type CategorieCreateManyInput = {
@@ -338,6 +361,7 @@ export type CategorieCreateManyInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   parentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -350,6 +374,7 @@ export type CategorieUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -361,6 +386,7 @@ export type CategorieUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -388,6 +414,7 @@ export type CategorieCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -400,6 +427,7 @@ export type CategorieMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -412,6 +440,7 @@ export type CategorieMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   image?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -479,6 +508,22 @@ export type CategorieUncheckedUpdateManyWithoutParentNestedInput = {
   deleteMany?: Prisma.CategorieScalarWhereInput | Prisma.CategorieScalarWhereInput[]
 }
 
+export type CategorieCreateNestedOneWithoutMedicinesInput = {
+  create?: Prisma.XOR<Prisma.CategorieCreateWithoutMedicinesInput, Prisma.CategorieUncheckedCreateWithoutMedicinesInput>
+  connectOrCreate?: Prisma.CategorieCreateOrConnectWithoutMedicinesInput
+  connect?: Prisma.CategorieWhereUniqueInput
+}
+
+export type CategorieUpdateOneWithoutMedicinesNestedInput = {
+  create?: Prisma.XOR<Prisma.CategorieCreateWithoutMedicinesInput, Prisma.CategorieUncheckedCreateWithoutMedicinesInput>
+  connectOrCreate?: Prisma.CategorieCreateOrConnectWithoutMedicinesInput
+  upsert?: Prisma.CategorieUpsertWithoutMedicinesInput
+  disconnect?: Prisma.CategorieWhereInput | boolean
+  delete?: Prisma.CategorieWhereInput | boolean
+  connect?: Prisma.CategorieWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategorieUpdateToOneWithWhereWithoutMedicinesInput, Prisma.CategorieUpdateWithoutMedicinesInput>, Prisma.CategorieUncheckedUpdateWithoutMedicinesInput>
+}
+
 export type CategorieCreateWithoutChildrenInput = {
   id?: string
   name: string
@@ -486,9 +531,11 @@ export type CategorieCreateWithoutChildrenInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   parent?: Prisma.CategorieCreateNestedOneWithoutChildrenInput
+  medicines?: Prisma.MedicineCreateNestedManyWithoutCategorieInput
 }
 
 export type CategorieUncheckedCreateWithoutChildrenInput = {
@@ -498,9 +545,11 @@ export type CategorieUncheckedCreateWithoutChildrenInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   parentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  medicines?: Prisma.MedicineUncheckedCreateNestedManyWithoutCategorieInput
 }
 
 export type CategorieCreateOrConnectWithoutChildrenInput = {
@@ -515,9 +564,11 @@ export type CategorieCreateWithoutParentInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   children?: Prisma.CategorieCreateNestedManyWithoutParentInput
+  medicines?: Prisma.MedicineCreateNestedManyWithoutCategorieInput
 }
 
 export type CategorieUncheckedCreateWithoutParentInput = {
@@ -527,9 +578,11 @@ export type CategorieUncheckedCreateWithoutParentInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   children?: Prisma.CategorieUncheckedCreateNestedManyWithoutParentInput
+  medicines?: Prisma.MedicineUncheckedCreateNestedManyWithoutCategorieInput
 }
 
 export type CategorieCreateOrConnectWithoutParentInput = {
@@ -560,9 +613,11 @@ export type CategorieUpdateWithoutChildrenInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   parent?: Prisma.CategorieUpdateOneWithoutChildrenNestedInput
+  medicines?: Prisma.MedicineUpdateManyWithoutCategorieNestedInput
 }
 
 export type CategorieUncheckedUpdateWithoutChildrenInput = {
@@ -572,9 +627,11 @@ export type CategorieUncheckedUpdateWithoutChildrenInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  medicines?: Prisma.MedicineUncheckedUpdateManyWithoutCategorieNestedInput
 }
 
 export type CategorieUpsertWithWhereUniqueWithoutParentInput = {
@@ -603,9 +660,82 @@ export type CategorieScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Categorie"> | string | null
   image?: Prisma.StringNullableFilter<"Categorie"> | string | null
   status?: Prisma.EnumStatusFilter<"Categorie"> | $Enums.Status
+  isFeatured?: Prisma.BoolFilter<"Categorie"> | boolean
   parentId?: Prisma.StringNullableFilter<"Categorie"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Categorie"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Categorie"> | Date | string
+}
+
+export type CategorieCreateWithoutMedicinesInput = {
+  id?: string
+  name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  status?: $Enums.Status
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parent?: Prisma.CategorieCreateNestedOneWithoutChildrenInput
+  children?: Prisma.CategorieCreateNestedManyWithoutParentInput
+}
+
+export type CategorieUncheckedCreateWithoutMedicinesInput = {
+  id?: string
+  name: string
+  slug: string
+  description?: string | null
+  image?: string | null
+  status?: $Enums.Status
+  isFeatured?: boolean
+  parentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  children?: Prisma.CategorieUncheckedCreateNestedManyWithoutParentInput
+}
+
+export type CategorieCreateOrConnectWithoutMedicinesInput = {
+  where: Prisma.CategorieWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategorieCreateWithoutMedicinesInput, Prisma.CategorieUncheckedCreateWithoutMedicinesInput>
+}
+
+export type CategorieUpsertWithoutMedicinesInput = {
+  update: Prisma.XOR<Prisma.CategorieUpdateWithoutMedicinesInput, Prisma.CategorieUncheckedUpdateWithoutMedicinesInput>
+  create: Prisma.XOR<Prisma.CategorieCreateWithoutMedicinesInput, Prisma.CategorieUncheckedCreateWithoutMedicinesInput>
+  where?: Prisma.CategorieWhereInput
+}
+
+export type CategorieUpdateToOneWithWhereWithoutMedicinesInput = {
+  where?: Prisma.CategorieWhereInput
+  data: Prisma.XOR<Prisma.CategorieUpdateWithoutMedicinesInput, Prisma.CategorieUncheckedUpdateWithoutMedicinesInput>
+}
+
+export type CategorieUpdateWithoutMedicinesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.CategorieUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.CategorieUpdateManyWithoutParentNestedInput
+}
+
+export type CategorieUncheckedUpdateWithoutMedicinesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  children?: Prisma.CategorieUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type CategorieCreateManyParentInput = {
@@ -615,6 +745,7 @@ export type CategorieCreateManyParentInput = {
   description?: string | null
   image?: string | null
   status?: $Enums.Status
+  isFeatured?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -626,9 +757,11 @@ export type CategorieUpdateWithoutParentInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.CategorieUpdateManyWithoutParentNestedInput
+  medicines?: Prisma.MedicineUpdateManyWithoutCategorieNestedInput
 }
 
 export type CategorieUncheckedUpdateWithoutParentInput = {
@@ -638,9 +771,11 @@ export type CategorieUncheckedUpdateWithoutParentInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.CategorieUncheckedUpdateManyWithoutParentNestedInput
+  medicines?: Prisma.MedicineUncheckedUpdateManyWithoutCategorieNestedInput
 }
 
 export type CategorieUncheckedUpdateManyWithoutParentInput = {
@@ -650,6 +785,7 @@ export type CategorieUncheckedUpdateManyWithoutParentInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -661,10 +797,12 @@ export type CategorieUncheckedUpdateManyWithoutParentInput = {
 
 export type CategorieCountOutputType = {
   children: number
+  medicines: number
 }
 
 export type CategorieCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   children?: boolean | CategorieCountOutputTypeCountChildrenArgs
+  medicines?: boolean | CategorieCountOutputTypeCountMedicinesArgs
 }
 
 /**
@@ -684,6 +822,13 @@ export type CategorieCountOutputTypeCountChildrenArgs<ExtArgs extends runtime.Ty
   where?: Prisma.CategorieWhereInput
 }
 
+/**
+ * CategorieCountOutputType without action
+ */
+export type CategorieCountOutputTypeCountMedicinesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MedicineWhereInput
+}
+
 
 export type CategorieSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -692,11 +837,13 @@ export type CategorieSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   description?: boolean
   image?: boolean
   status?: boolean
+  isFeatured?: boolean
   parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   parent?: boolean | Prisma.Categorie$parentArgs<ExtArgs>
   children?: boolean | Prisma.Categorie$childrenArgs<ExtArgs>
+  medicines?: boolean | Prisma.Categorie$medicinesArgs<ExtArgs>
   _count?: boolean | Prisma.CategorieCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["categorie"]>
 
@@ -707,6 +854,7 @@ export type CategorieSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   description?: boolean
   image?: boolean
   status?: boolean
+  isFeatured?: boolean
   parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -720,6 +868,7 @@ export type CategorieSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   description?: boolean
   image?: boolean
   status?: boolean
+  isFeatured?: boolean
   parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -733,15 +882,17 @@ export type CategorieSelectScalar = {
   description?: boolean
   image?: boolean
   status?: boolean
+  isFeatured?: boolean
   parentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CategorieOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "status" | "parentId" | "createdAt" | "updatedAt", ExtArgs["result"]["categorie"]>
+export type CategorieOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "description" | "image" | "status" | "isFeatured" | "parentId" | "createdAt" | "updatedAt", ExtArgs["result"]["categorie"]>
 export type CategorieInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   parent?: boolean | Prisma.Categorie$parentArgs<ExtArgs>
   children?: boolean | Prisma.Categorie$childrenArgs<ExtArgs>
+  medicines?: boolean | Prisma.Categorie$medicinesArgs<ExtArgs>
   _count?: boolean | Prisma.CategorieCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CategorieIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -756,6 +907,7 @@ export type $CategoriePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     parent: Prisma.$CategoriePayload<ExtArgs> | null
     children: Prisma.$CategoriePayload<ExtArgs>[]
+    medicines: Prisma.$MedicinePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -764,6 +916,7 @@ export type $CategoriePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     description: string | null
     image: string | null
     status: $Enums.Status
+    isFeatured: boolean
     parentId: string | null
     createdAt: Date
     updatedAt: Date
@@ -1163,6 +1316,7 @@ export interface Prisma__CategorieClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   parent<T extends Prisma.Categorie$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Categorie$parentArgs<ExtArgs>>): Prisma.Prisma__CategorieClient<runtime.Types.Result.GetResult<Prisma.$CategoriePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   children<T extends Prisma.Categorie$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Categorie$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoriePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  medicines<T extends Prisma.Categorie$medicinesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Categorie$medicinesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MedicinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1198,6 +1352,7 @@ export interface CategorieFieldRefs {
   readonly description: Prisma.FieldRef<"Categorie", 'String'>
   readonly image: Prisma.FieldRef<"Categorie", 'String'>
   readonly status: Prisma.FieldRef<"Categorie", 'Status'>
+  readonly isFeatured: Prisma.FieldRef<"Categorie", 'Boolean'>
   readonly parentId: Prisma.FieldRef<"Categorie", 'String'>
   readonly createdAt: Prisma.FieldRef<"Categorie", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Categorie", 'DateTime'>
@@ -1637,6 +1792,30 @@ export type Categorie$childrenArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.CategorieScalarFieldEnum | Prisma.CategorieScalarFieldEnum[]
+}
+
+/**
+ * Categorie.medicines
+ */
+export type Categorie$medicinesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Medicine
+   */
+  select?: Prisma.MedicineSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Medicine
+   */
+  omit?: Prisma.MedicineOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MedicineInclude<ExtArgs> | null
+  where?: Prisma.MedicineWhereInput
+  orderBy?: Prisma.MedicineOrderByWithRelationInput | Prisma.MedicineOrderByWithRelationInput[]
+  cursor?: Prisma.MedicineWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MedicineScalarFieldEnum | Prisma.MedicineScalarFieldEnum[]
 }
 
 /**

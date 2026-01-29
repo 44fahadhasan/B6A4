@@ -25,3 +25,52 @@ export const Status = {
 } as const
 
 export type Status = (typeof Status)[keyof typeof Status]
+
+
+export const PharmacieStatus = {
+  active: 'active',
+  inactive: 'inactive',
+  suspended: 'suspended',
+  blocked: 'blocked'
+} as const
+
+export type PharmacieStatus = (typeof PharmacieStatus)[keyof typeof PharmacieStatus]
+
+
+export const OrderStatus = {
+  pending: 'pending',
+  confirmed: 'confirmed',
+  shipped: 'shipped',
+  delivered: 'delivered',
+  canceled: 'canceled'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const PaymentMethod = {
+  cash: 'cash',
+  wallet: 'wallet',
+  bank_transfer: 'bank_transfer'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const PaymentStatus = {
+  pending: 'pending',
+  paid: 'paid',
+  failed: 'failed',
+  refunded: 'refunded'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const ReviewStatus = {
+  published: 'published',
+  pending: 'pending',
+  flagged: 'flagged'
+} as const
+
+export type ReviewStatus = (typeof ReviewStatus)[keyof typeof ReviewStatus]
