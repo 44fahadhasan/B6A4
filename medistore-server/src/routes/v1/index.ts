@@ -5,6 +5,7 @@ import deliveryAddressRouter from "../../modules/delivery-address/delivery-addre
 import medicineRouter from "../../modules/medicines/medicine.route";
 import orderRouter from "../../modules/orders/order.route";
 import pharmaceRouter from "../../modules/pharmacies/pharmace.route";
+import reviewRouter from "../../modules/reviews/review.route";
 import sellerRouter from "../../modules/sellers/seller.route";
 
 interface IModuleRouter {
@@ -18,12 +19,14 @@ const moduleRouters: IModuleRouter[] = [
   { path: "/customers", router: deliveryAddressRouter },
   { path: "/customers", router: cartItemRouter },
   { path: "/customers", router: orderRouter },
+  { path: "/customers", router: reviewRouter },
   { path: "/seller", router: sellerRouter },
   { path: "/seller", router: orderRouter },
   { path: "/categories", router: categorieRouter },
   { path: "/pharmaces", router: pharmaceRouter },
   { path: "/medicines", router: medicineRouter },
   { path: "/orders", router: orderRouter },
+  { path: "/reviews", router: reviewRouter },
 ];
 
 moduleRouters.forEach(({ path, router }) => v1Router.use(path, router));
