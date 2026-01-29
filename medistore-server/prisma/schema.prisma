@@ -139,7 +139,7 @@ model DeliveryAddress {
   postalCode  String?
   addressLine String
 
-  contactNumber String?
+  contactNumber String
 
   isDefault Boolean @default(false)
 
@@ -150,7 +150,7 @@ model DeliveryAddress {
   updatedAt DateTime @updatedAt
   orders    Order[]
 
-  @@index([userId])
+  @@unique([userId, contactNumber])
   @@map("delivery_addresses")
 }
 

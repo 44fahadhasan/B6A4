@@ -204,7 +204,7 @@ export type DeliveryAddressGroupByOutputType = {
   area: string | null
   postalCode: string | null
   addressLine: string
-  contactNumber: string | null
+  contactNumber: string
   isDefault: boolean
   userId: string
   createdAt: Date
@@ -241,7 +241,7 @@ export type DeliveryAddressWhereInput = {
   area?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
   postalCode?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
   addressLine?: Prisma.StringFilter<"DeliveryAddress"> | string
-  contactNumber?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
+  contactNumber?: Prisma.StringFilter<"DeliveryAddress"> | string
   isDefault?: Prisma.BoolFilter<"DeliveryAddress"> | boolean
   userId?: Prisma.StringFilter<"DeliveryAddress"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryAddress"> | Date | string
@@ -259,7 +259,7 @@ export type DeliveryAddressOrderByWithRelationInput = {
   area?: Prisma.SortOrderInput | Prisma.SortOrder
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine?: Prisma.SortOrder
-  contactNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactNumber?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -270,6 +270,7 @@ export type DeliveryAddressOrderByWithRelationInput = {
 
 export type DeliveryAddressWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  userId_contactNumber?: Prisma.DeliveryAddressUserIdContactNumberCompoundUniqueInput
   AND?: Prisma.DeliveryAddressWhereInput | Prisma.DeliveryAddressWhereInput[]
   OR?: Prisma.DeliveryAddressWhereInput[]
   NOT?: Prisma.DeliveryAddressWhereInput | Prisma.DeliveryAddressWhereInput[]
@@ -280,14 +281,14 @@ export type DeliveryAddressWhereUniqueInput = Prisma.AtLeast<{
   area?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
   postalCode?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
   addressLine?: Prisma.StringFilter<"DeliveryAddress"> | string
-  contactNumber?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
+  contactNumber?: Prisma.StringFilter<"DeliveryAddress"> | string
   isDefault?: Prisma.BoolFilter<"DeliveryAddress"> | boolean
   userId?: Prisma.StringFilter<"DeliveryAddress"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryAddress"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DeliveryAddress"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   orders?: Prisma.OrderListRelationFilter
-}, "id">
+}, "id" | "userId_contactNumber">
 
 export type DeliveryAddressOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -298,7 +299,7 @@ export type DeliveryAddressOrderByWithAggregationInput = {
   area?: Prisma.SortOrderInput | Prisma.SortOrder
   postalCode?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine?: Prisma.SortOrder
-  contactNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  contactNumber?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -320,7 +321,7 @@ export type DeliveryAddressScalarWhereWithAggregatesInput = {
   area?: Prisma.StringNullableWithAggregatesFilter<"DeliveryAddress"> | string | null
   postalCode?: Prisma.StringNullableWithAggregatesFilter<"DeliveryAddress"> | string | null
   addressLine?: Prisma.StringWithAggregatesFilter<"DeliveryAddress"> | string
-  contactNumber?: Prisma.StringNullableWithAggregatesFilter<"DeliveryAddress"> | string | null
+  contactNumber?: Prisma.StringWithAggregatesFilter<"DeliveryAddress"> | string
   isDefault?: Prisma.BoolWithAggregatesFilter<"DeliveryAddress"> | boolean
   userId?: Prisma.StringWithAggregatesFilter<"DeliveryAddress"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DeliveryAddress"> | Date | string
@@ -336,7 +337,7 @@ export type DeliveryAddressCreateInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -353,7 +354,7 @@ export type DeliveryAddressUncheckedCreateInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   userId: string
   createdAt?: Date | string
@@ -370,7 +371,7 @@ export type DeliveryAddressUpdateInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -387,7 +388,7 @@ export type DeliveryAddressUncheckedUpdateInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -404,7 +405,7 @@ export type DeliveryAddressCreateManyInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   userId: string
   createdAt?: Date | string
@@ -420,7 +421,7 @@ export type DeliveryAddressUpdateManyMutationInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -435,7 +436,7 @@ export type DeliveryAddressUncheckedUpdateManyInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -450,6 +451,11 @@ export type DeliveryAddressListRelationFilter = {
 
 export type DeliveryAddressOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type DeliveryAddressUserIdContactNumberCompoundUniqueInput = {
+  userId: string
+  contactNumber: string
 }
 
 export type DeliveryAddressCountOrderByAggregateInput = {
@@ -572,7 +578,7 @@ export type DeliveryAddressCreateWithoutUserInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -588,7 +594,7 @@ export type DeliveryAddressUncheckedCreateWithoutUserInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -633,7 +639,7 @@ export type DeliveryAddressScalarWhereInput = {
   area?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
   postalCode?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
   addressLine?: Prisma.StringFilter<"DeliveryAddress"> | string
-  contactNumber?: Prisma.StringNullableFilter<"DeliveryAddress"> | string | null
+  contactNumber?: Prisma.StringFilter<"DeliveryAddress"> | string
   isDefault?: Prisma.BoolFilter<"DeliveryAddress"> | boolean
   userId?: Prisma.StringFilter<"DeliveryAddress"> | string
   createdAt?: Prisma.DateTimeFilter<"DeliveryAddress"> | Date | string
@@ -649,7 +655,7 @@ export type DeliveryAddressCreateWithoutOrdersInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -665,7 +671,7 @@ export type DeliveryAddressUncheckedCreateWithoutOrdersInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   userId: string
   createdAt?: Date | string
@@ -697,7 +703,7 @@ export type DeliveryAddressUpdateWithoutOrdersInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -713,7 +719,7 @@ export type DeliveryAddressUncheckedUpdateWithoutOrdersInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -729,7 +735,7 @@ export type DeliveryAddressCreateManyUserInput = {
   area?: string | null
   postalCode?: string | null
   addressLine: string
-  contactNumber?: string | null
+  contactNumber: string
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -744,7 +750,7 @@ export type DeliveryAddressUpdateWithoutUserInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -760,7 +766,7 @@ export type DeliveryAddressUncheckedUpdateWithoutUserInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -776,7 +782,7 @@ export type DeliveryAddressUncheckedUpdateManyWithoutUserInput = {
   area?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -910,7 +916,7 @@ export type $DeliveryAddressPayload<ExtArgs extends runtime.Types.Extensions.Int
     area: string | null
     postalCode: string | null
     addressLine: string
-    contactNumber: string | null
+    contactNumber: string
     isDefault: boolean
     userId: string
     createdAt: Date
