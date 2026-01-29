@@ -317,7 +317,7 @@ export type InventoryGroupByOutputType = {
   manufactureDate: Date | null
   mrp: number
   discount: number | null
-  purchasePrice: number
+  purchasePrice: number | null
   sellingPrice: number
   damagedQty: number
   returnedQty: number
@@ -363,7 +363,7 @@ export type InventoryWhereInput = {
   manufactureDate?: Prisma.DateTimeNullableFilter<"Inventory"> | Date | string | null
   mrp?: Prisma.FloatFilter<"Inventory"> | number
   discount?: Prisma.FloatNullableFilter<"Inventory"> | number | null
-  purchasePrice?: Prisma.FloatFilter<"Inventory"> | number
+  purchasePrice?: Prisma.FloatNullableFilter<"Inventory"> | number | null
   sellingPrice?: Prisma.FloatFilter<"Inventory"> | number
   damagedQty?: Prisma.IntFilter<"Inventory"> | number
   returnedQty?: Prisma.IntFilter<"Inventory"> | number
@@ -388,7 +388,7 @@ export type InventoryOrderByWithRelationInput = {
   manufactureDate?: Prisma.SortOrderInput | Prisma.SortOrder
   mrp?: Prisma.SortOrder
   discount?: Prisma.SortOrderInput | Prisma.SortOrder
-  purchasePrice?: Prisma.SortOrder
+  purchasePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   sellingPrice?: Prisma.SortOrder
   damagedQty?: Prisma.SortOrder
   returnedQty?: Prisma.SortOrder
@@ -416,7 +416,7 @@ export type InventoryWhereUniqueInput = Prisma.AtLeast<{
   manufactureDate?: Prisma.DateTimeNullableFilter<"Inventory"> | Date | string | null
   mrp?: Prisma.FloatFilter<"Inventory"> | number
   discount?: Prisma.FloatNullableFilter<"Inventory"> | number | null
-  purchasePrice?: Prisma.FloatFilter<"Inventory"> | number
+  purchasePrice?: Prisma.FloatNullableFilter<"Inventory"> | number | null
   sellingPrice?: Prisma.FloatFilter<"Inventory"> | number
   damagedQty?: Prisma.IntFilter<"Inventory"> | number
   returnedQty?: Prisma.IntFilter<"Inventory"> | number
@@ -441,7 +441,7 @@ export type InventoryOrderByWithAggregationInput = {
   manufactureDate?: Prisma.SortOrderInput | Prisma.SortOrder
   mrp?: Prisma.SortOrder
   discount?: Prisma.SortOrderInput | Prisma.SortOrder
-  purchasePrice?: Prisma.SortOrder
+  purchasePrice?: Prisma.SortOrderInput | Prisma.SortOrder
   sellingPrice?: Prisma.SortOrder
   damagedQty?: Prisma.SortOrder
   returnedQty?: Prisma.SortOrder
@@ -472,7 +472,7 @@ export type InventoryScalarWhereWithAggregatesInput = {
   manufactureDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Inventory"> | Date | string | null
   mrp?: Prisma.FloatWithAggregatesFilter<"Inventory"> | number
   discount?: Prisma.FloatNullableWithAggregatesFilter<"Inventory"> | number | null
-  purchasePrice?: Prisma.FloatWithAggregatesFilter<"Inventory"> | number
+  purchasePrice?: Prisma.FloatNullableWithAggregatesFilter<"Inventory"> | number | null
   sellingPrice?: Prisma.FloatWithAggregatesFilter<"Inventory"> | number
   damagedQty?: Prisma.IntWithAggregatesFilter<"Inventory"> | number
   returnedQty?: Prisma.IntWithAggregatesFilter<"Inventory"> | number
@@ -495,7 +495,7 @@ export type InventoryCreateInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -518,7 +518,7 @@ export type InventoryUncheckedCreateInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -541,7 +541,7 @@ export type InventoryUpdateInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -564,7 +564,7 @@ export type InventoryUncheckedUpdateInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -587,7 +587,7 @@ export type InventoryCreateManyInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -610,7 +610,7 @@ export type InventoryUpdateManyMutationInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -631,7 +631,7 @@ export type InventoryUncheckedUpdateManyInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -867,7 +867,7 @@ export type InventoryCreateWithoutPharmacieInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -889,7 +889,7 @@ export type InventoryUncheckedCreateWithoutPharmacieInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -940,7 +940,7 @@ export type InventoryScalarWhereInput = {
   manufactureDate?: Prisma.DateTimeNullableFilter<"Inventory"> | Date | string | null
   mrp?: Prisma.FloatFilter<"Inventory"> | number
   discount?: Prisma.FloatNullableFilter<"Inventory"> | number | null
-  purchasePrice?: Prisma.FloatFilter<"Inventory"> | number
+  purchasePrice?: Prisma.FloatNullableFilter<"Inventory"> | number | null
   sellingPrice?: Prisma.FloatFilter<"Inventory"> | number
   damagedQty?: Prisma.IntFilter<"Inventory"> | number
   returnedQty?: Prisma.IntFilter<"Inventory"> | number
@@ -963,7 +963,7 @@ export type InventoryCreateWithoutMedicineInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -985,7 +985,7 @@ export type InventoryUncheckedCreateWithoutMedicineInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -1033,7 +1033,7 @@ export type InventoryCreateManyPharmacieInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -1055,7 +1055,7 @@ export type InventoryUpdateWithoutPharmacieInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1077,7 +1077,7 @@ export type InventoryUncheckedUpdateWithoutPharmacieInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1099,7 +1099,7 @@ export type InventoryUncheckedUpdateManyWithoutPharmacieInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1121,7 +1121,7 @@ export type InventoryCreateManyMedicineInput = {
   manufactureDate?: Date | string | null
   mrp: number
   discount?: number | null
-  purchasePrice: number
+  purchasePrice?: number | null
   sellingPrice: number
   damagedQty?: number
   returnedQty?: number
@@ -1143,7 +1143,7 @@ export type InventoryUpdateWithoutMedicineInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1165,7 +1165,7 @@ export type InventoryUncheckedUpdateWithoutMedicineInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1187,7 +1187,7 @@ export type InventoryUncheckedUpdateManyWithoutMedicineInput = {
   manufactureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mrp?: Prisma.FloatFieldUpdateOperationsInput | number
   discount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  purchasePrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   sellingPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   damagedQty?: Prisma.IntFieldUpdateOperationsInput | number
   returnedQty?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1329,7 +1329,7 @@ export type $InventoryPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     manufactureDate: Date | null
     mrp: number
     discount: number | null
-    purchasePrice: number
+    purchasePrice: number | null
     sellingPrice: number
     damagedQty: number
     returnedQty: number

@@ -102,7 +102,7 @@ CREATE TABLE "delivery_addresses" (
 );
 
 -- CreateTable
-CREATE TABLE "Pharmacies" (
+CREATE TABLE "pharmacies" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE "Pharmacies" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Pharmacies_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "pharmacies_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -196,7 +196,7 @@ CREATE TABLE "inventories" (
     "manufactureDate" TIMESTAMP(3),
     "mrp" DOUBLE PRECISION NOT NULL,
     "discount" DOUBLE PRECISION,
-    "purchasePrice" DOUBLE PRECISION NOT NULL,
+    "purchasePrice" DOUBLE PRECISION,
     "sellingPrice" DOUBLE PRECISION NOT NULL,
     "damagedQty" INTEGER NOT NULL DEFAULT 0,
     "returnedQty" INTEGER NOT NULL DEFAULT 0,
@@ -311,22 +311,22 @@ CREATE INDEX "verifications_identifier_idx" ON "verifications"("identifier");
 CREATE INDEX "delivery_addresses_userId_idx" ON "delivery_addresses"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Pharmacies_slug_key" ON "Pharmacies"("slug");
+CREATE UNIQUE INDEX "pharmacies_slug_key" ON "pharmacies"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Pharmacies_licenceNumber_key" ON "Pharmacies"("licenceNumber");
+CREATE UNIQUE INDEX "pharmacies_licenceNumber_key" ON "pharmacies"("licenceNumber");
 
 -- CreateIndex
-CREATE INDEX "Pharmacies_name_idx" ON "Pharmacies"("name");
+CREATE INDEX "pharmacies_name_idx" ON "pharmacies"("name");
 
 -- CreateIndex
-CREATE INDEX "Pharmacies_email_idx" ON "Pharmacies"("email");
+CREATE INDEX "pharmacies_email_idx" ON "pharmacies"("email");
 
 -- CreateIndex
-CREATE INDEX "Pharmacies_status_idx" ON "Pharmacies"("status");
+CREATE INDEX "pharmacies_status_idx" ON "pharmacies"("status");
 
 -- CreateIndex
-CREATE INDEX "Pharmacies_phoneNumber_idx" ON "Pharmacies"("phoneNumber");
+CREATE INDEX "pharmacies_phoneNumber_idx" ON "pharmacies"("phoneNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_name_key" ON "categories"("name");
@@ -380,6 +380,9 @@ CREATE INDEX "cart_items_userId_idx" ON "cart_items"("userId");
 CREATE INDEX "cart_items_medicineId_idx" ON "cart_items"("medicineId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "cart_items_userId_medicineId_key" ON "cart_items"("userId", "medicineId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "orders_orderNumber_key" ON "orders"("orderNumber");
 
 -- CreateIndex
@@ -428,7 +431,7 @@ ALTER TABLE "accounts" ADD CONSTRAINT "accounts_userId_fkey" FOREIGN KEY ("userI
 ALTER TABLE "delivery_addresses" ADD CONSTRAINT "delivery_addresses_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Pharmacies" ADD CONSTRAINT "Pharmacies_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "pharmacies" ADD CONSTRAINT "pharmacies_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "categories" ADD CONSTRAINT "categories_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "categories"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -440,13 +443,13 @@ ALTER TABLE "medicines" ADD CONSTRAINT "medicines_userId_fkey" FOREIGN KEY ("use
 ALTER TABLE "medicines" ADD CONSTRAINT "medicines_categorieId_fkey" FOREIGN KEY ("categorieId") REFERENCES "categories"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "medicines" ADD CONSTRAINT "medicines_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "Pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "medicines" ADD CONSTRAINT "medicines_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "inventories" ADD CONSTRAINT "inventories_medicineId_fkey" FOREIGN KEY ("medicineId") REFERENCES "medicines"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "inventories" ADD CONSTRAINT "inventories_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "Pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "inventories" ADD CONSTRAINT "inventories_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -455,13 +458,13 @@ ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_userId_fkey" FOREIGN KEY ("u
 ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_medicineId_fkey" FOREIGN KEY ("medicineId") REFERENCES "medicines"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "Pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "orders" ADD CONSTRAINT "orders_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "orders" ADD CONSTRAINT "orders_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "Pharmacies"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "pharmacies"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "orders" ADD CONSTRAINT "orders_deliveryAddressId_fkey" FOREIGN KEY ("deliveryAddressId") REFERENCES "delivery_addresses"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -488,4 +491,4 @@ ALTER TABLE "reviews" ADD CONSTRAINT "reviews_medicineId_fkey" FOREIGN KEY ("med
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviews" ADD CONSTRAINT "reviews_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "Pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "reviews" ADD CONSTRAINT "reviews_pharmacieId_fkey" FOREIGN KEY ("pharmacieId") REFERENCES "pharmacies"("id") ON DELETE CASCADE ON UPDATE CASCADE;
