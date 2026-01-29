@@ -19,6 +19,40 @@ enum Status {
   published
 }
 
+enum PharmacieStatus {
+  active
+  inactive
+  suspended
+  blocked
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  shipped
+  delivered
+  canceled
+}
+
+enum PaymentMethod {
+  cash
+  wallet
+  bank_transfer
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+enum ReviewStatus {
+  published
+  pending
+  flagged
+}
+
 model User {
   id            String    @id @default(ulid())
   name          String
@@ -30,10 +64,17 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  role       UserRole  @default(customer)
-  banned     Boolean?  @default(false)
-  banReason  String?
-  banExpires DateTime?
+  role              UserRole          @default(customer)
+  banned            Boolean?          @default(false)
+  banReason         String?
+  banExpires        DateTime?
+  pharmacies        Pharmacie[]
+  medicines         Medicine[]
+  orders            Order[]
+  payments          Payment[]
+  deliveryAddresses DeliveryAddress[]
+  reviews           Review[]
+  cartItems         CartItem[]
 
   @@map("users")
 }
@@ -88,21 +129,329 @@ model Verification {
   @@map("verifications")
 }
 
+model DeliveryAddress {
+  id          String  @id @default(ulid())
+  label       String?
+  country     String
+  division    String?
+  city        String
+  area        String?
+  postalCode  String?
+  addressLine String
+
+  contactNumber String?
+
+  isDefault Boolean @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+
+  @@index([userId])
+  @@map("delivery_addresses")
+}
+
+model Pharmacie {
+  id          String  @id @default(ulid())
+  name        String
+  slug        String  @unique
+  description String?
+  image       String?
+
+  licenceNumber String    @unique
+  gstNumber     String?
+  tradeLicense  String?
+  licenceExpiry DateTime?
+
+  email       String?
+  phoneNumber String
+
+  country   String
+  division  String
+  city      String
+  area      String?
+  address   String
+  latitude  Float?
+  longitude Float?
+
+  openingTime  String?
+  closingTime  String?
+  isDeliveryOn Boolean @default(false)
+
+  isVerified     Boolean   @default(false)
+  verifiedAt     DateTime?
+  rejectedReason String?
+
+  status      PharmacieStatus @default(inactive)
+  isSuspended Boolean         @default(false)
+  suspendedAt DateTime?
+
+  licenceFile String?
+  nidFile     String?
+  tradeFile   String?
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  medicines   Medicine[]
+  orders      Order[]
+  reviews     Review[]
+  cartItems   CartItem[]
+  inventories Inventory[]
+
+  @@index([name])
+  @@index([email])
+  @@index([status])
+  @@index([phoneNumber])
+  @@map("Pharmacies")
+}
+
 model Categorie {
   id          String  @id @default(ulid())
   name        String  @unique
   slug        String  @unique
   description String?
   image       String?
-  status      Status  @default(published)
+
+  status     Status  @default(published)
+  isFeatured Boolean @default(false)
 
   parentId String?
   parent   Categorie?  @relation("CategorieHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
   children Categorie[] @relation("CategorieHierarchy")
 
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  medicines Medicine[]
+
+  @@index([name])
+  @@index([status])
+  @@map("categories")
+}
+
+model Medicine {
+  id          String  @id @default(ulid())
+  name        String
+  slug        String  @unique
+  description String?
+  image       String?
+
+  genericName  String
+  brandName    String?
+  manufacturer String
+  strength     String?
+  dosageForm   String
+  packSize     String?
+  drugCode     String?
+
+  isControlledDrug       Boolean @default(false)
+  isPrescriptionRequired Boolean @default(false)
+
+  isFeatured Boolean @default(false)
+  status     Status  @default(published)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  categorieId String?
+  categorie   Categorie? @relation(fields: [categorieId], references: [id], onDelete: SetNull)
+
+  pharmacieId String
+  pharmacie   Pharmacie @relation(fields: [pharmacieId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+  reviews     Review[]
+  cartItems   CartItem[]
+  inventories Inventory[]
+
+  @@index([name])
+  @@index([status])
+  @@index([genericName])
+  @@index([manufacturer])
+  @@index([pharmacieId])
+  @@index([categorieId])
+  @@map("medicines")
+}
+
+model Inventory {
+  id                String  @id @default(ulid())
+  stock             Int
+  minStock          Int?
+  lowStockThreshold Int?
+  reservedQty       Int     @default(0)
+  isOutOfStock      Boolean @default(false)
+
+  batchNumber     String
+  expiryDate      DateTime
+  manufactureDate DateTime?
+
+  mrp           Float
+  discount      Float?
+  purchasePrice Float
+  sellingPrice  Float
+
+  damagedQty  Int     @default(0)
+  returnedQty Int     @default(0)
+  isExpired   Boolean @default(false)
+
+  medicineId String
+  medicine   Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  pharmacieId String
+  pharmacie   Pharmacie @relation(fields: [pharmacieId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([name])
-  @@map("categories")
+  @@index([medicineId])
+  @@index([pharmacieId])
+  @@index([expiryDate])
+  @@index([batchNumber])
+  @@map("inventories")
+}
+
+model CartItem {
+  id String @id @default(ulid())
+
+  quantity   Int      @default(1)
+  priceAtAdd Float
+  addedAt    DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  medicineId String
+  medicine   Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  pharmacieId String
+  pharmacie   Pharmacie @relation(fields: [pharmacieId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([medicineId])
+  @@map("cart_items")
+}
+
+model Order {
+  id          String @id @default(ulid())
+  orderNumber String @unique
+
+  totalAmount Float
+  discount    Float?
+  tax         Float?
+  grandTotal  Float
+
+  status OrderStatus @default(pending)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  pharmacieId String?
+  pharmacie   Pharmacie? @relation(fields: [pharmacieId], references: [id], onDelete: SetNull)
+
+  deliveryAddressId String?
+  deliveryAddress   DeliveryAddress? @relation(fields: [deliveryAddressId], references: [id], onDelete: SetNull)
+
+  confirmedAt DateTime?
+  shippedAt   DateTime?
+  deliveredAt DateTime?
+  canceledAt  DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+  payments    Payment[]
+  reviews     Review[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([pharmacieId])
+  @@index([orderNumber])
+  @@map("orders")
+}
+
+model OrderItem {
+  id String @id @default(ulid())
+
+  medicineId String?
+  medicine   Medicine? @relation(fields: [medicineId], references: [id], onDelete: NoAction)
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  quantity Int
+  price    Float
+  discount Float?
+  subtotal Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([medicineId])
+  @@map("order_items")
+}
+
+model Payment {
+  id String @id @default(ulid())
+
+  method PaymentMethod @default(cash)
+  status PaymentStatus @default(pending)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  orderId String?
+  order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  amount        Float
+  transactionId String?
+
+  paymentDate  DateTime?
+  refundedAt   DateTime?
+  refundReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([method])
+  @@index([userId])
+  @@index([orderId])
+  @@index([transactionId])
+  @@map("payments")
+}
+
+model Review {
+  id String @id @default(ulid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  medicineId String?
+  medicine   Medicine? @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  orderId String?
+  order   Order?  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  pharmacieId String?
+  pharmacie   Pharmacie? @relation(fields: [pharmacieId], references: [id], onDelete: Cascade)
+
+  rating  Int
+  comment String?
+  status  ReviewStatus @default(published)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([pharmacieId])
+  @@map("reviews")
 }
