@@ -73,7 +73,8 @@ const getMedicines = async (req: Request) => {
             mrp: true,
             sellingPrice: true,
             discount: true,
-            stock: true,
+            minStock: true,
+            expiryDate: true,
           },
         },
         categorie: {
@@ -177,6 +178,9 @@ const getMedicinesForAdmin = async (req: Request) => {
             sellingPrice: true,
             discount: true,
             stock: true,
+            minStock: true,
+            lowStockThreshold: true,
+            isExpired: true,
           },
         },
       },
@@ -189,7 +193,64 @@ const getMedicinesForAdmin = async (req: Request) => {
 
 const getMedicine = async (medicineId: string) => {
   const result = await prisma.medicine.findUnique({
+    where: {
+      id: medicineId,
+      status: "published",
+    },
+    include: {
+      categorie: {
+        select: {
+          name: true,
+          slug: true,
+          description: true,
+          image: true,
+        },
+      },
+      inventories: {
+        select: {
+          mrp: true,
+          sellingPrice: true,
+          discount: true,
+          minStock: true,
+          expiryDate: true,
+        },
+      },
+      reviews: {
+        select: {
+          rating: true,
+          comment: true,
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      },
+      pharmacie: {
+        select: {
+          name: true,
+          slug: true,
+          image: true,
+        },
+      },
+    },
+  });
+  return result;
+};
+
+const getMedicineForAdmin = async (medicineId: string) => {
+  const result = await prisma.medicine.findUnique({
     where: { id: medicineId },
+    include: {
+      categorie: true,
+      inventories: true,
+      pharmacie: true,
+      reviews: true,
+      orderItems: true,
+      cartItems: true,
+      user: true,
+    },
   });
   return result;
 };
@@ -216,6 +277,7 @@ export const medicineService = {
   createMedicine,
   updateMedicine,
   getMedicine,
+  getMedicineForAdmin,
   getMedicines,
   getMedicinesForAdmin,
   deleteMedicine,

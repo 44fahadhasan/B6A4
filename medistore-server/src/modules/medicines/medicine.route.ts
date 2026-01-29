@@ -16,6 +16,12 @@ medicineRouter.get(
 
 medicineRouter.get("/medicine/:medicineId", medicineController.getMedicine);
 
+medicineRouter.get(
+  "/medicine/:medicineId/admin",
+  auth(UserRole.admin, [Permission.VIEW]),
+  medicineController.getMedicineForAdmin,
+);
+
 medicineRouter.post(
   "/medicine/create",
   auth(UserRole.seller, [Permission.ADD]),

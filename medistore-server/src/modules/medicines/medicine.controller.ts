@@ -45,7 +45,25 @@ const getMedicine = async (
     const data = await medicineService.getMedicine(req.params.medicineId);
 
     sendResponse(res, {
-      statusCode: 201,
+      message: "Medicine get!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getMedicineForAdmin = async (
+  req: Request<{ medicineId: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await medicineService.getMedicineForAdmin(
+      req.params.medicineId,
+    );
+
+    sendResponse(res, {
       message: "Medicine get!",
       data,
     });
@@ -115,6 +133,7 @@ export const medicineController = {
   createMedicine,
   updateMedicine,
   getMedicine,
+  getMedicineForAdmin,
   getMedicines,
   getMedicinesForAdmin,
   deleteMedicine,
