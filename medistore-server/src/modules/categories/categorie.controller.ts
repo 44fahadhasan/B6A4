@@ -45,7 +45,7 @@ const getCategorie = async (
     const data = await categorieService.getCategorie(req.params.categorieId);
 
     sendResponse(res, {
-      statusCode: 201,
+      statusCode: 200,
       message: "Categorie get!",
       data,
     });
