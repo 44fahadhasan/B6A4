@@ -6,6 +6,110 @@ import type { MedicineWhereInput } from "../../generated/prisma/models";
 import paginationOptions from "../../utils/pagination.util";
 
 const getMedicines = async (req: Request) => {
+  const { search, category, manufacturer, featured, minPrice, maxPrice } =
+    req.query;
+  const { page, limit, skip, orderBy, order } = paginationOptions(req);
+
+  const where: MedicineWhereInput = {
+    status: "published",
+    ...(search
+      ? {
+          OR: [
+            {
+              name: {
+                contains: search as string,
+                mode: "insensitive",
+              },
+            },
+            {
+              genericName: {
+                contains: search as string,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }
+      : {}),
+    ...(featured && ["true", "false"].includes(featured as string)
+      ? {
+          isFeatured: JSON.parse(featured as string),
+        }
+      : {}),
+    ...(category
+      ? {
+          categorie: {
+            name: category as string,
+          },
+        }
+      : {}),
+    ...(manufacturer
+      ? {
+          manufacturer: manufacturer as string,
+        }
+      : {}),
+    ...(minPrice || maxPrice
+      ? {
+          inventories: {
+            some: {
+              sellingPrice: {
+                gt: minPrice ? Number(minPrice) : 0,
+                lte: maxPrice ? Number(maxPrice) : 1000000000,
+              },
+            },
+          },
+        }
+      : {}),
+  };
+
+  const [medicine, total] = await prisma.$transaction([
+    prisma.medicine.findMany({
+      skip,
+      take: limit,
+      where,
+      orderBy: { [orderBy]: order },
+      include: {
+        inventories: {
+          select: {
+            mrp: true,
+            sellingPrice: true,
+            discount: true,
+            stock: true,
+          },
+        },
+        categorie: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
+        pharmacie: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
+        reviews: {
+          select: {
+            rating: true,
+            comment: true,
+            createdAt: true,
+            user: {
+              select: {
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    }),
+    prisma.medicine.count({ where }),
+  ]);
+
+  return { medicine, meta: { page, limit, total } };
+};
+
+const getMedicinesForAdmin = async (req: Request) => {
   const { status, search, featured } = req.query;
   const { page, limit, skip, orderBy, order } = paginationOptions(req);
 
@@ -39,6 +143,14 @@ const getMedicines = async (req: Request) => {
               manufacturer: {
                 contains: search as string,
                 mode: "insensitive",
+              },
+            },
+            {
+              categorie: {
+                name: {
+                  contains: search as string,
+                  mode: "insensitive",
+                },
               },
             },
           ],
@@ -105,5 +217,6 @@ export const medicineService = {
   updateMedicine,
   getMedicine,
   getMedicines,
+  getMedicinesForAdmin,
   deleteMedicine,
 };

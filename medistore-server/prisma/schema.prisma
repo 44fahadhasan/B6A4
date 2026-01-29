@@ -294,7 +294,7 @@ model Inventory {
 
   mrp           Float
   discount      Float?
-  purchasePrice Float
+  purchasePrice Float?
   sellingPrice  Float
 
   damagedQty  Int     @default(0)

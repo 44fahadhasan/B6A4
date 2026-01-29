@@ -6,10 +6,12 @@ import { medicineController } from "./medicine.controller";
 
 const medicineRouter = Router();
 
+medicineRouter.get("/", medicineController.getMedicines);
+
 medicineRouter.get(
-  "/",
+  "/admin",
   auth(UserRole.admin, [Permission.VIEW]),
-  medicineController.getMedicines,
+  medicineController.getMedicinesForAdmin,
 );
 
 medicineRouter.get("/medicine/:medicineId", medicineController.getMedicine);

@@ -19,6 +19,23 @@ const getMedicines = async (
   }
 };
 
+const getMedicinesForAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await medicineService.getMedicinesForAdmin(req);
+
+    sendResponse(res, {
+      message: "Medicines get!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getMedicine = async (
   req: Request<{ medicineId: string }>,
   res: Response,
@@ -99,5 +116,6 @@ export const medicineController = {
   updateMedicine,
   getMedicine,
   getMedicines,
+  getMedicinesForAdmin,
   deleteMedicine,
 };
