@@ -7,6 +7,7 @@ import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { createPortal } from "react-dom";
+import AuthActionButtons from "../auth-action-buttons";
 import { navLinks } from "./nav.data";
 
 export function MobileNav() {
@@ -74,12 +75,7 @@ export function MobileNav() {
                 ))}
               </div>
               <div className="mt-12 flex flex-col gap-2">
-                <Button asChild className="w-full" variant="outline">
-                  <Link href="/sing-in">Sign In</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/customer-singup">Sign Up</Link>
-                </Button>
+                <AuthActionButtons />
               </div>
             </div>
           </div>,

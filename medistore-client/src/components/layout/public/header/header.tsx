@@ -1,10 +1,11 @@
 "use client";
 
 import { Logo } from "@/components/shared/logo";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import AuthActionButtons from "../auth-action-buttons";
 import { MobileNav } from "./mobile-nav";
 import { navLinks } from "./nav.data";
 
@@ -34,12 +35,7 @@ export function Header() {
           ))}
         </div>
         <div className="hidden gap-1 md:flex">
-          <Button asChild variant="outline">
-            <Link href="/sing-in">Sign In</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/customer-singup">Sign Up</Link>
-          </Button>
+          <AuthActionButtons />
         </div>
         <MobileNav />
       </nav>
