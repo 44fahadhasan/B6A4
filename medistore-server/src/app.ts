@@ -8,11 +8,12 @@ import rootRouter from "./routes";
 
 const app = express();
 
+app.use(cors(corsOptions));
+
 app.all(`${config.better_auth_path}/*splat`, toNodeHandler(auth));
 // seed admin
 // await createAdmin();
 
-app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/", (_, res) => {
