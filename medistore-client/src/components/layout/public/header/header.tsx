@@ -6,21 +6,7 @@ import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { MobileNav } from "./mobile-nav";
-
-export const navLinks = [
-  {
-    label: "Shop",
-    href: "/shop",
-  },
-  {
-    label: "About",
-    href: "/about",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
-];
+import { navLinks } from "./nav.data";
 
 export function Header() {
   const scrolled = useScroll(10);

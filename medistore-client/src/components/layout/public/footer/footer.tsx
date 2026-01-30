@@ -1,86 +1,11 @@
 import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  LinkedinIcon,
-  TwitterIcon,
-  YoutubeIcon,
-} from "lucide-react";
 import Link from "next/link";
-import { ModeToggle } from "../../mode-toggle";
+import { ModeToggle } from "../../../shared/mode-toggle";
+import { company, resources, socialLinks } from "./footer.data";
 
 export function Footer() {
-  const company = [
-    {
-      title: "About Us",
-      href: "#",
-    },
-    {
-      title: "Careers",
-      href: "#",
-    },
-    {
-      title: "Brand assets",
-      href: "#",
-    },
-    {
-      title: "Privacy Policy",
-      href: "#",
-    },
-    {
-      title: "Terms of Service",
-      href: "#",
-    },
-  ];
-
-  const resources = [
-    {
-      title: "Blog",
-      href: "#",
-    },
-    {
-      title: "Help Center",
-      href: "#",
-    },
-    {
-      title: "Contact Support",
-      href: "#",
-    },
-    {
-      title: "Community",
-      href: "#",
-    },
-    {
-      title: "Security",
-      href: "#",
-    },
-  ];
-
-  const socialLinks = [
-    {
-      icon: FacebookIcon,
-      link: "#",
-    },
-    {
-      icon: InstagramIcon,
-      link: "#",
-    },
-    {
-      icon: LinkedinIcon,
-      link: "#",
-    },
-    {
-      icon: TwitterIcon,
-      link: "#",
-    },
-    {
-      icon: YoutubeIcon,
-      link: "#",
-    },
-  ];
-
   return (
     <footer className="relative">
       <div

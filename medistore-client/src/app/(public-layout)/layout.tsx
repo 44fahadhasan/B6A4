@@ -9,7 +9,9 @@ export default function PublicLayout({
   return (
     <>
       <Header />
-      <div className="min-h-[calc(100vh-305px)]">{children}</div>
+      <div className="min-h-[calc(100vh-305px)] py-8 md:py-10 lg:py-14">
+        {children}
+      </div>
       <Footer />
     </>
   );

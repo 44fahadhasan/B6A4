@@ -7,7 +7,7 @@ import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { createPortal } from "react-dom";
-import { navLinks } from "./header";
+import { navLinks } from "./nav.data";
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
