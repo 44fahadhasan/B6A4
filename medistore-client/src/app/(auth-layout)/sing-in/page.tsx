@@ -1,6 +1,7 @@
 import SingInForm from "@/components/pages/public/auth/singin/singin-form";
 import { Logo } from "@/components/shared/logo";
 import { ModeToggle } from "@/components/shared/mode-toggle";
+import TermsAndPrivacy from "@/components/shared/terms-and-privacy";
 import { Button } from "@/components/ui/button";
 import { Particles } from "@/components/ui/particles";
 import { ChevronLeftIcon } from "lucide-react";
@@ -36,23 +37,7 @@ export default function SingInPage() {
             </p>
           </div>
           <SingInForm />
-          <p className="mt-8 text-muted-foreground text-sm">
-            By clicking continue, you agree to our{" "}
-            <Link
-              href="/terms-of-service"
-              className="underline underline-offset-4 hover:text-primary"
-            >
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link
-              href="/privacy-policy"
-              className="underline underline-offset-4 hover:text-primary"
-            >
-              Privacy Policy
-            </Link>
-            .
-          </p>
+          <TermsAndPrivacy />
         </div>
       </div>
     </div>
