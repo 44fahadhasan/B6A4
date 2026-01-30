@@ -38,7 +38,7 @@ export function Header() {
             <Link href="/sing-in">Sign In</Link>
           </Button>
           <Button asChild>
-            <Link href="/sing-up">Sign Up</Link>
+            <Link href="/customer-singup">Sign Up</Link>
           </Button>
         </div>
         <MobileNav />
