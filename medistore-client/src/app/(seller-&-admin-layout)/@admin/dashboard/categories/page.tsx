@@ -2,7 +2,6 @@ import AddCategory from "@/components/pages/admin/categories/category-add";
 import CategoryTable from "@/components/pages/admin/categories/category-table";
 import InputSearch from "@/components/shared/input-search";
 import PageContentHeader from "@/components/shared/page-content-header";
-import Wrapper from "@/components/shared/wrapper";
 import { TCategoryParams } from "@/services/category.service";
 
 export default async function CategoriesPage({
@@ -13,7 +12,7 @@ export default async function CategoriesPage({
   const params = await searchParams;
 
   return (
-    <Wrapper>
+    <div className="space-y-10">
       <PageContentHeader
         title="Medicine Categories"
         content="Organize medicines by category to keep your store clear, searchable, and easy to manage."
@@ -28,6 +27,6 @@ export default async function CategoriesPage({
         </div>
       </PageContentHeader>
       <CategoryTable params={params} />
-    </Wrapper>
+    </div>
   );
 }

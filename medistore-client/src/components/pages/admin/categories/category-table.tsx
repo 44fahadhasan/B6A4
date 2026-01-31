@@ -1,5 +1,23 @@
 import { getCategories } from "@/actions/category.action";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { TCategoryParams } from "@/services/category.service";
+import { MoreHorizontalIcon } from "lucide-react";
 
 export default async function CategoryTable({
   params,
@@ -8,7 +26,52 @@ export default async function CategoryTable({
 }) {
   const { success, data, message } = await getCategories(params);
 
-  console.log(data);
+  if (!success) {
+    return (
+      <h4 className="text-xl font-medium text-center text-destructive">
+        {message}
+      </h4>
+    );
+  }
 
-  return <div>{message}</div>;
+  return (
+    <Card className="px-3 md:px-5 lg:px-7">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>S. No.</TableHead>
+            <TableHead>Category Name</TableHead>
+            <TableHead>Slug</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.categories.map((categorie: any, idx: number) => (
+            <TableRow key={categorie.id}>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
+              <TableCell className="font-medium">{categorie.name}</TableCell>
+              <TableCell>{categorie.slug}</TableCell>
+              <TableCell className="text-right">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="size-8">
+                      <MoreHorizontalIcon />
+                      <span className="sr-only">Open menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem variant="destructive">
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
+  );
 }
