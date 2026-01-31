@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function SellerDashboardPage() {
-  return <div>seller dashboard page</div>;
+  redirect("/dashboard/medicines");
 }
