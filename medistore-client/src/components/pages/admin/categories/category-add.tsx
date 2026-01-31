@@ -1,6 +1,6 @@
 "use client";
 
-import createCategory from "@/actions/category.action";
+import { createCategory } from "@/actions/category.action";
 import FormModal from "@/components/shared/form-modal";
 import {
   Field,

@@ -1,5 +1,6 @@
 import { AppSidebar } from "@/components/layout/seller-and-admin/app-sidebar";
 import SidebarBreadcrumb from "@/components/layout/seller-and-admin/sidebar-breadcrumb";
+import { ModeToggle } from "@/components/shared/mode-toggle";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -31,6 +32,9 @@ export default async function Layout({
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" />
           <SidebarBreadcrumb />
+          <div className="ml-auto">
+            <ModeToggle />
+          </div>
         </header>
         <div className="flex-1 p-4">
           {currentUserRole === UserRole.seller && seller}

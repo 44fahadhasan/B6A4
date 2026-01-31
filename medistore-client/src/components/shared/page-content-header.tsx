@@ -1,7 +1,7 @@
 import {
   Card,
-  CardAction,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -21,7 +21,7 @@ const PageContentHeader = ({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{content}</CardDescription>
       </CardHeader>
-      <CardAction className="self-end">{children && children}</CardAction>
+      <CardFooter>{children && children}</CardFooter>
     </Card>
   );
 };
