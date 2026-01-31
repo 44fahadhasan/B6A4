@@ -1,3 +1,5 @@
+import CategoriesMain from "@/components/pages/admin/categories/categories-main";
+
 export default function CategoriesPage() {
-  return <div>CategoriesPage</div>;
+  return <CategoriesMain />;
 }
