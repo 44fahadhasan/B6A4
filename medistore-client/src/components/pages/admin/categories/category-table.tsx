@@ -1,4 +1,5 @@
 import { getCategories } from "@/actions/category.action";
+import { EmptyBox } from "@/components/shared/empty-box";
 import Pagination from "@/components/shared/pagination";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,6 +20,8 @@ import {
 } from "@/components/ui/table";
 import { TCategoryParams } from "@/services/category.service";
 import { MoreHorizontalIcon } from "lucide-react";
+import AddCategory from "./category-add";
+import CategoryDelete from "./category-delete";
 
 export default async function CategoryTable({
   params,
@@ -49,30 +52,42 @@ export default async function CategoryTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.categories.map((categorie: any, idx: number) => (
-              <TableRow key={categorie.id}>
-                <TableCell className="font-medium">{idx + 1}</TableCell>
-                <TableCell className="font-medium">{categorie.name}</TableCell>
-                <TableCell>{categorie.slug}</TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="size-8">
-                        <MoreHorizontalIcon />
-                        <span className="sr-only">Open menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem variant="destructive">
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+            {data.categories.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4}>
+                  <EmptyBox label="category">
+                    <AddCategory />
+                  </EmptyBox>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              data.categories.map((categorie: any, idx: number) => (
+                <TableRow key={categorie.id}>
+                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell className="font-medium">
+                    {categorie.name}
+                  </TableCell>
+                  <TableCell>{categorie.slug}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="size-8">
+                          <MoreHorizontalIcon />
+                          <span className="sr-only">Open menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <CategoryDelete categorieId={categorie.id} />
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </Card>
