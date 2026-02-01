@@ -37,6 +37,8 @@ const auth = (role: UserRole, permissions: string[]) => {
         });
       }
 
+      req.user = session.user;
+
       next();
     } catch (error) {
       next(error);

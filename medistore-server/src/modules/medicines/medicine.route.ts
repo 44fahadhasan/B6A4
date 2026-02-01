@@ -9,6 +9,12 @@ const medicineRouter = Router();
 medicineRouter.get("/", medicineController.getMedicines);
 
 medicineRouter.get(
+  "/seller",
+  auth(UserRole.seller, [Permission.VIEW]),
+  medicineController.getMedicinesForSeller,
+);
+
+medicineRouter.get(
   "/admin",
   auth(UserRole.admin, [Permission.VIEW]),
   medicineController.getMedicinesForAdmin,

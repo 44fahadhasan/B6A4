@@ -204,6 +204,7 @@ model Pharmacie {
   cartItems   CartItem[]
   inventories Inventory[]
 
+  @@unique([ownerId])
   @@index([name])
   @@index([email])
   @@index([status])

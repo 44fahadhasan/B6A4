@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { admin } from "better-auth/plugins";
+import { admin, customSession } from "better-auth/plugins";
 import config from "../config";
 import { allowedOrigins } from "../config/cors";
 import { prisma } from "../config/prisma";
@@ -30,6 +30,28 @@ export const auth = betterAuth({
     },
   },
   plugins: [
+    customSession(async ({ user, session }) => {
+      const result = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: {
+          role: true,
+          pharmacies: {
+            select: { id: true },
+          },
+        },
+      });
+      return {
+        user: {
+          ...user,
+          role: result?.role as string,
+          pharmacieId:
+            result && result.pharmacies.length === 1
+              ? result.pharmacies.at(0)?.id
+              : null,
+        },
+        session,
+      };
+    }),
     admin({
       defaultRole: UserRole.customer,
       ac,

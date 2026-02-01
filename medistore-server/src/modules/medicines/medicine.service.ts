@@ -61,7 +61,7 @@ const getMedicines = async (req: Request) => {
       : {}),
   };
 
-  const [medicine, total] = await prisma.$transaction([
+  const [medicines, total] = await prisma.$transaction([
     prisma.medicine.findMany({
       skip,
       take: limit,
@@ -107,7 +107,93 @@ const getMedicines = async (req: Request) => {
     prisma.medicine.count({ where }),
   ]);
 
-  return { medicine, meta: { page, limit, total } };
+  return { medicines, meta: { page, limit, total } };
+};
+
+const getMedicinesForSeller = async (req: Request) => {
+  const { status, search, featured } = req.query;
+  const { page, limit, skip, orderBy, order } = paginationOptions(req);
+
+  if (!req.user?.pharmacieId) {
+    throw new Error("Pharmacie id is required");
+  }
+
+  const where: MedicineWhereInput = {
+    pharmacieId: req.user.pharmacieId,
+    ...(status && MedicineStatus.includes(status as string)
+      ? {
+          status: status as Status,
+        }
+      : {}),
+    ...(featured && ["true", "false"].includes(featured as string)
+      ? {
+          isFeatured: JSON.parse(featured as string),
+        }
+      : {}),
+    ...(search
+      ? {
+          OR: [
+            {
+              name: {
+                contains: search as string,
+                mode: "insensitive",
+              },
+            },
+            {
+              genericName: {
+                contains: search as string,
+                mode: "insensitive",
+              },
+            },
+            {
+              manufacturer: {
+                contains: search as string,
+                mode: "insensitive",
+              },
+            },
+            {
+              categorie: {
+                name: {
+                  contains: search as string,
+                  mode: "insensitive",
+                },
+              },
+            },
+          ],
+        }
+      : {}),
+  };
+
+  const [medicines, total] = await prisma.$transaction([
+    prisma.medicine.findMany({
+      skip,
+      take: limit,
+      where,
+      orderBy: { [orderBy]: order },
+      include: {
+        categorie: {
+          select: {
+            name: true,
+          },
+        },
+        inventories: {
+          select: {
+            purchasePrice: true,
+            mrp: true,
+            sellingPrice: true,
+            discount: true,
+            stock: true,
+            minStock: true,
+            lowStockThreshold: true,
+            isExpired: true,
+          },
+        },
+      },
+    }),
+    prisma.medicine.count({ where }),
+  ]);
+
+  return { medicines, meta: { page, limit, total } };
 };
 
 const getMedicinesForAdmin = async (req: Request) => {
@@ -159,7 +245,7 @@ const getMedicinesForAdmin = async (req: Request) => {
       : {}),
   };
 
-  const [medicine, total] = await prisma.$transaction([
+  const [medicines, total] = await prisma.$transaction([
     prisma.medicine.findMany({
       skip,
       take: limit,
@@ -188,7 +274,7 @@ const getMedicinesForAdmin = async (req: Request) => {
     prisma.medicine.count({ where }),
   ]);
 
-  return { medicine, meta: { page, limit, total } };
+  return { medicines, meta: { page, limit, total } };
 };
 
 const getMedicine = async (medicineId: string) => {
@@ -277,6 +363,7 @@ export const medicineService = {
   createMedicine,
   updateMedicine,
   getMedicine,
+  getMedicinesForSeller,
   getMedicineForAdmin,
   getMedicines,
   getMedicinesForAdmin,

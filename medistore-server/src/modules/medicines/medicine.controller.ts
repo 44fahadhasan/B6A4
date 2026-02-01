@@ -19,6 +19,23 @@ const getMedicines = async (
   }
 };
 
+const getMedicinesForSeller = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await medicineService.getMedicinesForSeller(req);
+
+    sendResponse(res, {
+      message: "Medicines get!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getMedicinesForAdmin = async (
   req: Request,
   res: Response,
@@ -78,7 +95,16 @@ const createMedicine = async (
   next: NextFunction,
 ) => {
   try {
-    const data = await medicineService.createMedicine(req.body);
+    const { user, body } = req;
+
+    if (!user?.pharmacieId) {
+      throw new Error("Pharmacie id is required");
+    }
+
+    const data = await medicineService.createMedicine({
+      ...body,
+      pharmacieId: user?.pharmacieId,
+    });
 
     sendResponse(res, {
       statusCode: 201,
@@ -133,6 +159,7 @@ export const medicineController = {
   createMedicine,
   updateMedicine,
   getMedicine,
+  getMedicinesForSeller,
   getMedicineForAdmin,
   getMedicines,
   getMedicinesForAdmin,

@@ -498,6 +498,7 @@ export type PharmacieWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   slug?: string
   licenceNumber?: string
+  ownerId?: string
   AND?: Prisma.PharmacieWhereInput | Prisma.PharmacieWhereInput[]
   OR?: Prisma.PharmacieWhereInput[]
   NOT?: Prisma.PharmacieWhereInput | Prisma.PharmacieWhereInput[]
@@ -528,7 +529,6 @@ export type PharmacieWhereUniqueInput = Prisma.AtLeast<{
   licenceFile?: Prisma.StringNullableFilter<"Pharmacie"> | string | null
   nidFile?: Prisma.StringNullableFilter<"Pharmacie"> | string | null
   tradeFile?: Prisma.StringNullableFilter<"Pharmacie"> | string | null
-  ownerId?: Prisma.StringFilter<"Pharmacie"> | string
   createdAt?: Prisma.DateTimeFilter<"Pharmacie"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Pharmacie"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -537,7 +537,7 @@ export type PharmacieWhereUniqueInput = Prisma.AtLeast<{
   reviews?: Prisma.ReviewListRelationFilter
   cartItems?: Prisma.CartItemListRelationFilter
   inventories?: Prisma.InventoryListRelationFilter
-}, "id" | "slug" | "licenceNumber">
+}, "id" | "slug" | "licenceNumber" | "ownerId">
 
 export type PharmacieOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
