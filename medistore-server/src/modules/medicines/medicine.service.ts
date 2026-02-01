@@ -201,6 +201,7 @@ const getMedicinesForAdmin = async (req: Request) => {
   const { page, limit, skip, orderBy, order } = paginationOptions(req);
 
   const where: MedicineWhereInput = {
+    status: "published",
     ...(status && MedicineStatus.includes(status as string)
       ? {
           status: status as Status,
@@ -267,6 +268,17 @@ const getMedicinesForAdmin = async (req: Request) => {
             minStock: true,
             lowStockThreshold: true,
             isExpired: true,
+          },
+        },
+        pharmacie: {
+          select: {
+            name: true,
+            owner: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
           },
         },
       },
