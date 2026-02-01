@@ -1,6 +1,6 @@
 "use client";
 
-import { IPaginationOptions } from "@/types";
+import useQueryParam from "@/hooks/use-query-param";
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,11 +10,30 @@ import {
 import { Button } from "../ui/button";
 import SelectSearch from "./select-search";
 
-export default function Pagination({ params }: { params: IPaginationOptions }) {
+export default function Pagination({
+  meta,
+}: {
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+}) {
+  const { setParamValue } = useQueryParam("page");
+
+  const { total: totalItems, page: currentPage, limit } = meta;
+
+  const totalPage = Math.max(1, Math.ceil(totalItems / limit));
+
+  const end = Math.min(currentPage * limit, totalItems);
+  const start = totalItems === 0 ? 0 : (currentPage - 1) * limit + 1;
+
+  const navigateToPage = (page: number) => setParamValue(`${page}`);
+
   return (
     <div className="flex items-center justify-between px-4">
       <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-        0 of 68 row(s) selected.
+        Showing {start} to {end} of {totalItems} results
       </div>
       <div className="flex w-full items-center gap-8 lg:w-fit">
         <div className="hidden items-center gap-2 lg:flex">
@@ -27,18 +46,35 @@ export default function Pagination({ params }: { params: IPaginationOptions }) {
           />
         </div>
         <div className="flex w-fit items-center justify-center text-sm font-medium">
-          Page 0 of 10
+          Page {currentPage} of {totalPage}
         </div>
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
-          <Button variant="outline" className="hidden h-8 w-8 p-0 lg:flex">
+          <Button
+            variant="outline"
+            disabled={currentPage === 1}
+            className="hidden h-8 w-8 p-0 lg:flex"
+            onClick={() => navigateToPage(1)}
+          >
             <span className="sr-only">Go to first page</span>
             <ChevronsLeft />
           </Button>
-          <Button variant="outline" className="size-8" size="icon">
+          <Button
+            size="icon"
+            variant="outline"
+            className="size-8"
+            disabled={currentPage === 1}
+            onClick={() => navigateToPage(currentPage - 1)}
+          >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
           </Button>
-          <Button variant="outline" className="size-8" size="icon">
+          <Button
+            size="icon"
+            variant="outline"
+            className="size-8"
+            disabled={currentPage === totalPage}
+            onClick={() => navigateToPage(currentPage + 1)}
+          >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
           </Button>
@@ -46,6 +82,8 @@ export default function Pagination({ params }: { params: IPaginationOptions }) {
             size="icon"
             variant="outline"
             className="hidden size-8 lg:flex"
+            onClick={() => navigateToPage(totalPage)}
+            disabled={currentPage === totalPage}
           >
             <span className="sr-only">Go to last page</span>
             <ChevronsRight />

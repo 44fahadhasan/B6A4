@@ -2,7 +2,6 @@ import AddCategory from "@/components/pages/admin/categories/category-add";
 import CategoryTable from "@/components/pages/admin/categories/category-table";
 import InputSearch from "@/components/shared/input-search";
 import PageContentHeader from "@/components/shared/page-content-header";
-import Pagination from "@/components/shared/pagination";
 import { TCategoryParams } from "@/services/category.service";
 
 export default async function CategoriesPage({
@@ -27,7 +26,6 @@ export default async function CategoriesPage({
           <AddCategory />
         </div>
       </PageContentHeader>
-      <Pagination params={params} />
       <CategoryTable params={params} />
     </div>
   );

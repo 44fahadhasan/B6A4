@@ -1,4 +1,5 @@
 import { getCategories } from "@/actions/category.action";
+import Pagination from "@/components/shared/pagination";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -35,43 +36,46 @@ export default async function CategoryTable({
   }
 
   return (
-    <Card className="px-3 md:px-5 lg:px-7">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>S. No.</TableHead>
-            <TableHead>Category Name</TableHead>
-            <TableHead>Slug</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.categories.map((categorie: any, idx: number) => (
-            <TableRow key={categorie.id}>
-              <TableCell className="font-medium">{idx + 1}</TableCell>
-              <TableCell className="font-medium">{categorie.name}</TableCell>
-              <TableCell>{categorie.slug}</TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="size-8">
-                      <MoreHorizontalIcon />
-                      <span className="sr-only">Open menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem variant="destructive">
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+    <div className="space-y-5">
+      <Pagination meta={data.meta} />
+      <Card className="px-3 md:px-5 lg:px-7">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>S. No.</TableHead>
+              <TableHead>Category Name</TableHead>
+              <TableHead>Slug</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Card>
+          </TableHeader>
+          <TableBody>
+            {data.categories.map((categorie: any, idx: number) => (
+              <TableRow key={categorie.id}>
+                <TableCell className="font-medium">{idx + 1}</TableCell>
+                <TableCell className="font-medium">{categorie.name}</TableCell>
+                <TableCell>{categorie.slug}</TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="size-8">
+                        <MoreHorizontalIcon />
+                        <span className="sr-only">Open menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem variant="destructive">
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Card>
+    </div>
   );
 }

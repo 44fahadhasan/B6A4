@@ -17,7 +17,7 @@ export default function useQueryParam(name: string) {
       params.delete(name);
     }
 
-    router.replace(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   return { paramValue, setParamValue };
