@@ -1,6 +1,6 @@
 import { createAccessControl } from "better-auth/plugins/access";
 import { adminAc, defaultStatements } from "better-auth/plugins/admin/access";
-import UserRole from "./roles";
+import { UserRole } from "./role.const";
 
 export const Permission = {
   VIEW: "view",

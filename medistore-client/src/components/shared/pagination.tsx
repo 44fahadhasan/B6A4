@@ -28,7 +28,10 @@ export default function Pagination({
   const end = Math.min(currentPage * limit, totalItems);
   const start = totalItems === 0 ? 0 : (currentPage - 1) * limit + 1;
 
-  const navigateToPage = (page: number) => setParamValue(`${page}`);
+  const navigateToPage = (page: number) => {
+    const newPage = Math.max(1, Math.min(page, totalPage));
+    setParamValue(`${newPage}`);
+  };
 
   return (
     <div className="flex items-center justify-between px-4">
