@@ -1,3 +1,32 @@
-export default function SellerMedicinesPage() {
-  return <div>Seller Medicines Page</div>;
+import AddMedicine from "@/components/pages/seller/medicines/medicine-add";
+import MedicineTable from "@/components/pages/seller/medicines/medicine-table";
+import InputSearch from "@/components/shared/input-search";
+import PageContentHeader from "@/components/shared/page-content-header";
+import { TMedicineParams } from "@/services/medicine.service";
+
+export default async function SellerMedicinesPage({
+  searchParams,
+}: {
+  searchParams: Promise<TMedicineParams>;
+}) {
+  const params = await searchParams;
+
+  return (
+    <div className="space-y-10">
+      <PageContentHeader
+        title="Medicines"
+        content="Manage and organize all medicines for easy search and filtering."
+      >
+        <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 w-full">
+          <InputSearch
+            paramName="search"
+            className="max-sm:max-w-full sm:max-w-md"
+            placeholder="Search by medicine name, generic, manufacturer, or category…"
+          />
+          <AddMedicine />
+        </div>
+      </PageContentHeader>
+      <MedicineTable params={params} />
+    </div>
+  );
 }

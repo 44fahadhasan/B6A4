@@ -46,7 +46,7 @@ export default function FormModal({
         </Button>
       </DialogTrigger>
       <DialogContent
-        className={cn("max-h-[90vh] overflow-y-auto sm:max-w-sm ", className)}
+        className={cn("max-h-[90vh] overflow-y-auto sm:max-w-sm", className)}
       >
         <DialogHeader>
           <DialogTitle>{modalTitle}</DialogTitle>

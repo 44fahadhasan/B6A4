@@ -1,16 +1,16 @@
 import { env } from "@/env";
-import { TCategoryPost } from "@/form-schemas/category-form.schema";
+import { TMedicine } from "@/form-schemas/medicine-form.schema";
 import { IPaginationOptions, IQueryParams } from "@/types";
 import { cookies } from "next/headers";
 
 const API_URL = env.BACKEND_API_URL;
 
-export type TCategoryParams = IPaginationOptions & IQueryParams;
+export type TMedicineParams = IPaginationOptions & IQueryParams;
 
-export const categoryService = {
-  getCategories: async function (params?: TCategoryParams) {
+export const medicineService = {
+  getMedicinesForAdmin: async function (params?: TMedicineParams) {
     try {
-      const url = new URL(`${API_URL}/categories`);
+      const url = new URL(`${API_URL}/medicines/admin`);
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
           if (value !== undefined && value !== null && value !== "") {
@@ -27,7 +27,7 @@ export const categoryService = {
         headers: {
           Cookie: cookieStore.toString(),
         },
-        next: { tags: ["categories"] },
+        next: { tags: ["medicines"] },
       });
 
       if (!res.ok) {
@@ -58,11 +58,26 @@ export const categoryService = {
     }
   },
 
-  getCategoriesList: async function () {
+  getMedicinesForSeller: async function (params?: TMedicineParams) {
     try {
-      const res = await fetch(`${API_URL}/categories/list`, {
+      const url = new URL(`${API_URL}/medicines/seller`);
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== "") {
+            url.searchParams.append(key, value);
+          }
+        });
+      }
+
+      const api = url.toString();
+      const cookieStore = await cookies();
+
+      const res = await fetch(api, {
         method: "GET",
-        next: { tags: ["categories"] },
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        next: { tags: ["medicines"] },
       });
 
       if (!res.ok) {
@@ -93,11 +108,11 @@ export const categoryService = {
     }
   },
 
-  createCategory: async function (payload: TCategoryPost) {
+  createMedicine: async function (payload: TMedicine) {
     try {
       const cookieStore = await cookies();
 
-      const res = await fetch(`${API_URL}/categories/categorie/create`, {
+      const res = await fetch(`${API_URL}/medicines/medicine/create`, {
         method: "POST",
         headers: {
           Cookie: cookieStore.toString(),
@@ -134,17 +149,17 @@ export const categoryService = {
     }
   },
 
-  updateCategory: async function ({
+  updateMedicine: async function ({
     id,
     payload,
   }: {
     id: string;
-    payload: TCategoryPost;
+    payload: TMedicine;
   }) {
     try {
       const cookieStore = await cookies();
 
-      const res = await fetch(`${API_URL}/categories/categorie/update/${id}`, {
+      const res = await fetch(`${API_URL}/medicines/medicine/update/${id}`, {
         method: "PATCH",
         headers: {
           Cookie: cookieStore.toString(),
@@ -181,11 +196,11 @@ export const categoryService = {
     }
   },
 
-  deleteCategory: async function (id: string) {
+  deleteMedicine: async function (id: string) {
     try {
       const cookieStore = await cookies();
 
-      const res = await fetch(`${API_URL}/categories/categorie/delete/${id}`, {
+      const res = await fetch(`${API_URL}/medicines/medicine/delete/${id}`, {
         method: "DELETE",
         headers: {
           Cookie: cookieStore.toString(),
