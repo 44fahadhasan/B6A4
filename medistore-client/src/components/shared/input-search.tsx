@@ -7,15 +7,15 @@ import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 
 export default function InputSearch({
-  name,
+  paramName,
   className,
   placeholder,
 }: {
-  name: string;
+  paramName: string;
   className?: string;
   placeholder?: string;
 }) {
-  const { paramValue, setParamValue } = useQueryParam(name);
+  const { paramValue, setParamValue } = useQueryParam(paramName);
 
   const [search, setSearch] = useState(paramValue);
 

@@ -69,7 +69,7 @@ export default function AuthActionButtons() {
       {isPending ? (
         <Skeleton className="size-10 rounded-full" />
       ) : error ? (
-        <p>Something Wrong</p>
+        <p className="text-destructive">Something Wrong</p>
       ) : data ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
