@@ -99,6 +99,53 @@ export const categoryService = {
     }
   },
 
+  updateCategory: async function ({
+    id,
+    payload,
+  }: {
+    id: string;
+    payload: TCategoryPost;
+  }) {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/categories/categorie/update/${id}`, {
+        method: "PATCH",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+
+      const { success, message, data } = await res.json();
+
+      if (!success) {
+        return {
+          data: null,
+          success,
+          message,
+        };
+      }
+
+      return {
+        data,
+        success,
+        message,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  },
+
   deleteCategory: async function (id: string) {
     try {
       const cookieStore = await cookies();

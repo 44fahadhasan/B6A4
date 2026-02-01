@@ -23,7 +23,7 @@ export function DeleteModal({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" className="w-full rounded-xl">
+        <Button variant="destructive" className="w-full">
           Delete
         </Button>
       </AlertDialogTrigger>

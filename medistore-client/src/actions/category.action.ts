@@ -28,3 +28,19 @@ export async function deleteCategory(id: string) {
 
   return res;
 }
+
+export async function updateCategory({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: TCategoryPost;
+}) {
+  const res = await categoryService.updateCategory({ id, payload });
+
+  if (res.success) {
+    revalidateTag("categories", "max");
+  }
+
+  return res;
+}

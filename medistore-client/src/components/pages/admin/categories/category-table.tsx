@@ -22,6 +22,7 @@ import { TCategoryParams } from "@/services/category.service";
 import { MoreHorizontalIcon } from "lucide-react";
 import AddCategory from "./category-add";
 import CategoryDelete from "./category-delete";
+import UpdateCategory from "./category-update";
 
 export default async function CategoryTable({
   params,
@@ -77,7 +78,9 @@ export default async function CategoryTable({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <UpdateCategory data={categorie} />
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                           <CategoryDelete categorieId={categorie.id} />
