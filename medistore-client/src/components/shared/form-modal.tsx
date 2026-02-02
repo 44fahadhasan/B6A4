@@ -41,12 +41,14 @@ export default function FormModal({
           className={cn(formType === "update" && "w-full")}
         >
           {formType === "add" && <PlusCircle />}
-          {formType === "update" && ""}
           {triggerLabel}
         </Button>
       </DialogTrigger>
       <DialogContent
-        className={cn("max-h-[90vh] overflow-y-auto sm:max-w-sm", className)}
+        className={cn(
+          "max-h-[90vh] no-scrollbar overflow-y-auto sm:max-w-sm",
+          className,
+        )}
       >
         <DialogHeader>
           <DialogTitle>{modalTitle}</DialogTitle>

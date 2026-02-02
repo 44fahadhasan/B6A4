@@ -2,6 +2,7 @@ import { Router, type IRouter } from "express";
 import cartItemRouter from "../../modules/cart-items/cart-item.route";
 import categorieRouter from "../../modules/categories/categorie.route";
 import deliveryAddressRouter from "../../modules/delivery-address/delivery-address.route";
+import inventoryRouter from "../../modules/inventories/inventory.route";
 import medicineRouter from "../../modules/medicines/medicine.route";
 import orderRouter from "../../modules/orders/order.route";
 import pharmaceRouter from "../../modules/pharmacies/pharmace.route";
@@ -25,6 +26,7 @@ const moduleRouters: IModuleRouter[] = [
   { path: "/categories", router: categorieRouter },
   { path: "/pharmaces", router: pharmaceRouter },
   { path: "/medicines", router: medicineRouter },
+  { path: "/inventories", router: inventoryRouter },
   { path: "/orders", router: orderRouter },
   { path: "/reviews", router: reviewRouter },
 ];

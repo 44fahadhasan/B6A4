@@ -13,8 +13,8 @@ export const sellerSidebarMenus: ISidebarMenu[] = [
     url: "/dashboard/medicines",
   },
   {
-    title: "Stocks",
-    url: "/dashboard/stocks",
+    title: "Inventories",
+    url: "/dashboard/inventories",
   },
   {
     title: "Orders",

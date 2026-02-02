@@ -21,7 +21,8 @@ import {
 import { TMedicine } from "@/form-schemas/medicine-form.schema";
 import { TCategoryParams } from "@/services/category.service";
 import { MoreHorizontalIcon } from "lucide-react";
-import AddCategory from "./medicine-add";
+import AddInventory from "../inventories/inventory-add";
+import AddMedicine from "./medicine-add";
 import CategoryDelete from "./medicine-delete";
 import UpdateCategory from "./medicine-update";
 
@@ -53,15 +54,16 @@ export default async function MedicineTable({
               <TableHead className="text-left">Generic</TableHead>
               <TableHead className="text-left">Manufacturer</TableHead>
               <TableHead className="text-left">Dosage Form</TableHead>
+              <TableHead className="text-center w-24">Batch No.</TableHead>
               <TableHead className="text-right w-32">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.medicines.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7}>
+                <TableCell colSpan={8}>
                   <EmptyBox label="medicine">
-                    <AddCategory />
+                    <AddMedicine />
                   </EmptyBox>
                 </TableCell>
               </TableRow>
@@ -77,6 +79,9 @@ export default async function MedicineTable({
                     <TableCell>{medicine.genericName}</TableCell>
                     <TableCell>{medicine.manufacturer}</TableCell>
                     <TableCell>{medicine.dosageForm}</TableCell>
+                    <TableCell>
+                      <AddInventory medicineId={medicine.id} />
+                    </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
