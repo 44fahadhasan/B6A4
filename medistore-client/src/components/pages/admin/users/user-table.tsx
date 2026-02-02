@@ -1,5 +1,6 @@
 "use client";
 
+import { DeleteModal } from "@/components/shared/delete-modal";
 import Pagination from "@/components/shared/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ import { TCategoryParams } from "@/services/category.service";
 import { UserWithRole } from "better-auth/plugins";
 import { Inbox, MoreHorizontalIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import UserBanUnbanModal from "./user-ban-unban-modal";
 
 export default function UserTable({ params }: { params: TCategoryParams }) {
@@ -88,6 +90,26 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
       </h4>
     );
   }
+
+  const handleDelete = async (userId: string) => {
+    const id = toast.loading("Delete user, please wait...");
+
+    try {
+      const { error } = await authClient.admin.removeUser({
+        userId,
+      });
+
+      if (error) {
+        return toast.error(error.message || error.statusText, { id });
+      }
+
+      setRefetchFlag((pre) => !pre);
+
+      toast.success(`User has been delteed successfully.`, { id });
+    } catch (error) {
+      toast.error("Something went wrong", { id });
+    }
+  };
 
   return (
     <div className="space-y-5">
@@ -179,19 +201,16 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         {user.banned && (
-                          <>
-                            <DropdownMenuItem asChild>
-                              <UserBanUnbanModal
-                                label="unban"
-                                id={user.id}
-                                title="Unban this user?"
-                                setRefetchFlag={setRefetchFlag}
-                                actionLabel="Yes, Unban User"
-                                description="This will restore the user's access to the system, allowing them to log in, place orders, and use all platform features again."
-                              />
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                          </>
+                          <DropdownMenuItem asChild>
+                            <UserBanUnbanModal
+                              label="unban"
+                              id={user.id}
+                              title="Unban this user?"
+                              setRefetchFlag={setRefetchFlag}
+                              actionLabel="Yes, Unban User"
+                              description="This will restore the user's access to the system, allowing them to log in, place orders, and use all platform features again."
+                            />
+                          </DropdownMenuItem>
                         )}
                         <DropdownMenuItem asChild>
                           <UserBanUnbanModal
@@ -201,6 +220,13 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
                             actionLabel="Yes, Ban User"
                             setRefetchFlag={setRefetchFlag}
                             description="This user will no longer be able to log in, place orders, or access any features. You can unban the user later if needed."
+                          />
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <DeleteModal
+                            id={user.id}
+                            handleDelete={handleDelete}
                           />
                         </DropdownMenuItem>
                       </DropdownMenuContent>

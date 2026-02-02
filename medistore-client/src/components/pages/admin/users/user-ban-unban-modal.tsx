@@ -75,7 +75,7 @@ export default function UserBanUnbanModal({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          className="w-full capitalize"
+          className="w-full mb-1 capitalize"
           variant={label === "ban" ? "destructive" : "default"}
         >
           {label} User
