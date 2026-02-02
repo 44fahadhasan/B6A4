@@ -61,7 +61,7 @@ const getMedicines = async (req: Request) => {
       : {}),
   };
 
-  const [medicines, total] = await prisma.$transaction([
+  const [raw_medicines, total] = await prisma.$transaction([
     prisma.medicine.findMany({
       skip,
       take: limit,
@@ -70,10 +70,14 @@ const getMedicines = async (req: Request) => {
       include: {
         inventories: {
           select: {
+            id: true,
+            batchNumber: true,
             mrp: true,
             sellingPrice: true,
             discount: true,
+            stock: true,
             minStock: true,
+            reservedQty: true,
             expiryDate: true,
           },
         },
@@ -106,6 +110,50 @@ const getMedicines = async (req: Request) => {
     }),
     prisma.medicine.count({ where }),
   ]);
+
+  const medicines = raw_medicines.map((medicine) => {
+    const valid_stock_batch = medicine.inventories
+      .filter(
+        (inventory) =>
+          inventory.stock > 0 && new Date(inventory.expiryDate) > new Date(),
+      )
+      .sort(
+        (a, b) =>
+          new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime(),
+      );
+
+    const total_stock = valid_stock_batch.reduce(
+      (sum, inventory) => sum + inventory.stock - inventory.reservedQty,
+      0,
+    );
+
+    const active_batch = valid_stock_batch.at(0) ?? null;
+
+    return {
+      // medicine info
+      id: medicine.id,
+      name: medicine.name,
+      slug: medicine.slug,
+      genericName: medicine.genericName,
+      manufacturer: medicine.manufacturer,
+      dosageForm: medicine.dosageForm,
+      strength: medicine.strength,
+      categorie: medicine.categorie,
+      pharmacie: medicine.pharmacie,
+      reviews: medicine.reviews,
+      // inventory infos
+      isOutOfStock: total_stock <= 0,
+      stock: active_batch
+        ? {
+            mrp: active_batch.mrp,
+            availableQty: total_stock,
+            discount: active_batch.discount,
+            expiryDate: active_batch.expiryDate,
+            sellingPrice: active_batch.sellingPrice,
+          }
+        : null,
+    };
+  });
 
   return { medicines, meta: { page, limit, total } };
 };
