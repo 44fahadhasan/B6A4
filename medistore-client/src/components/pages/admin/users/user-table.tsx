@@ -163,17 +163,21 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem asChild>
-                          <UserBanUnbanModal
-                            label="unban"
-                            id={user.id}
-                            title="Unban this user?"
-                            setRefetchFlag={setRefetchFlag}
-                            actionLabel="Yes, Unban User"
-                            description="This will restore the user's access to the system, allowing them to log in, place orders, and use all platform features again."
-                          />
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                        {user.banned && (
+                          <>
+                            <DropdownMenuItem asChild>
+                              <UserBanUnbanModal
+                                label="unban"
+                                id={user.id}
+                                title="Unban this user?"
+                                setRefetchFlag={setRefetchFlag}
+                                actionLabel="Yes, Unban User"
+                                description="This will restore the user's access to the system, allowing them to log in, place orders, and use all platform features again."
+                              />
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                          </>
+                        )}
                         <DropdownMenuItem asChild>
                           <UserBanUnbanModal
                             label="ban"
