@@ -1,6 +1,7 @@
 "use client";
 
 import Pagination from "@/components/shared/pagination";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -142,9 +143,23 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
                   <TableCell>
                     <div className="space-y-1 text-sm">
                       <p className="capitalize">Role: {user.role}</p>
-                      <p>
-                        Status:{" "}
-                        {user.banned ? `Banned (${user.banReason})` : "Active"}
+                      <p className="flex items-center gap-2 text-sm font-medium">
+                        <span className="text-muted-foreground">Status:</span>
+                        {user.banned ? (
+                          <Badge
+                            variant="destructive"
+                            className="flex items-center gap-1"
+                          >
+                            Banned
+                            {user.banReason && (
+                              <span className="ml-1 text-xs opacity-80">
+                                ({user.banReason})
+                              </span>
+                            )}
+                          </Badge>
+                        ) : (
+                          <Badge variant="default">Active</Badge>
+                        )}
                       </p>
                     </div>
                   </TableCell>
