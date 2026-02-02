@@ -1,7 +1,15 @@
 "use client";
 
 import Pagination from "@/components/shared/pagination";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Empty,
   EmptyDescription,
@@ -20,8 +28,9 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { TCategoryParams } from "@/services/category.service";
 import { UserWithRole } from "better-auth/plugins";
-import { Inbox } from "lucide-react";
+import { Inbox, MoreHorizontalIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import UserBanUnbanModal from "./user-ban-unban-modal";
 
 export default function UserTable({ params }: { params: TCategoryParams }) {
   const [error, setError] = useState<{
@@ -43,6 +52,7 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
       }
     | null
   >(null);
+  const [refetchFlag, setRefetchFlag] = useState<boolean>(false);
 
   useEffect(() => {
     try {
@@ -68,7 +78,7 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
         message: (error as Error).message || "Something went wrong",
       });
     }
-  }, [params]);
+  }, [params, refetchFlag]);
 
   if (error) {
     return (
@@ -96,6 +106,7 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
               <TableHead>Role & Status</TableHead>
               <TableHead>Email Verification</TableHead>
               <TableHead className="text-right">Registered On</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -142,6 +153,39 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
                   </TableCell>
                   <TableCell className="text-right text-muted-foreground">
                     {new Date(user.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="size-8">
+                          <MoreHorizontalIcon />
+                          <span className="sr-only">Open menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                          <UserBanUnbanModal
+                            label="unban"
+                            id={user.id}
+                            title="Unban this user?"
+                            setRefetchFlag={setRefetchFlag}
+                            actionLabel="Yes, Unban User"
+                            description="This will restore the user's access to the system, allowing them to log in, place orders, and use all platform features again."
+                          />
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <UserBanUnbanModal
+                            label="ban"
+                            id={user.id}
+                            title="Ban this user?"
+                            actionLabel="Yes, Ban User"
+                            setRefetchFlag={setRefetchFlag}
+                            description="This user will no longer be able to log in, place orders, or access any features. You can unban the user later if needed."
+                          />
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))

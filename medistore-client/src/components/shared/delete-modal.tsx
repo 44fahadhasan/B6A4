@@ -18,7 +18,7 @@ export function DeleteModal({
   handleDelete,
 }: {
   id: string;
-  handleDelete: Function;
+  handleDelete: (id: string) => void;
 }) {
   return (
     <AlertDialog>
