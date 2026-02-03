@@ -21,7 +21,16 @@ const getCartItems = async (
 
 const addCartItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = await cartService.addCartItem(req.body);
+    const { user, body } = req;
+
+    if (!user?.id) {
+      throw new Error("User id is required");
+    }
+
+    const data = await cartService.addCartItem({
+      ...body,
+      userId: user?.id,
+    });
 
     sendResponse(res, {
       statusCode: 201,

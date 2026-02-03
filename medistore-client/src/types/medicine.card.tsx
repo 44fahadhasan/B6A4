@@ -7,7 +7,7 @@ export interface IMedicineCard {
   dosageForm: string;
   strength: string | null;
   categorie: { name: string | null };
-  pharmacie: { name: string };
+  pharmacie: { name: string; id: string };
   reviews: any[];
   isOutOfStock: boolean;
   stock: {

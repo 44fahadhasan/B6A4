@@ -32,7 +32,7 @@ export default async function MedicinesShopPage({
   }
 
   return (
-    <div className="flex gap-5 mx-auto max-lg:px-5 max-w-7xl px-5">
+    <div className="flex gap-8 mx-auto max-lg:px-5 max-w-7xl px-5">
       <div className="hidden lg:flex">
         <MedicineFilters />
       </div>

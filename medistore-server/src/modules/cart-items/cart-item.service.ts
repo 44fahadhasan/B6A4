@@ -5,16 +5,38 @@ import paginationOptions from "../../utils/pagination.util";
 
 const getCartItems = async (req: Request) => {
   const { page, limit, skip } = paginationOptions(req);
+  const { user } = req;
 
-  const [cart, total] = await prisma.$transaction([
+  if (!user?.id) {
+    throw new Error("User id is required");
+  }
+
+  const [cartItems, total] = await prisma.$transaction([
     prisma.cartItem.findMany({
       skip,
       take: limit,
+      where: {
+        userId: user?.id,
+      },
+      include: {
+        medicine: {
+          select: {
+            name: true,
+            genericName: true,
+            brandName: true,
+            categorie: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     }),
     prisma.cartItem.count(),
   ]);
 
-  return { cart, meta: { page, limit, total } };
+  return { cartItems, meta: { page, limit, total } };
 };
 
 const addCartItem = async (payload: CartItem) => {

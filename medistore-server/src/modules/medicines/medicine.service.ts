@@ -83,6 +83,7 @@ const getMedicines = async (req: Request) => {
         },
         pharmacie: {
           select: {
+            id: true,
             name: true,
             slug: true,
           },

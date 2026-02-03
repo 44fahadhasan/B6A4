@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,13 +7,8 @@ import {
 } from "@/components/ui/card";
 import { IMedicineCard } from "@/types";
 import { format } from "date-fns";
-import {
-  AlertTriangle,
-  Calendar,
-  Pill,
-  ShoppingCart,
-  Warehouse,
-} from "lucide-react";
+import { AlertTriangle, Calendar, Pill, Warehouse } from "lucide-react";
+import AddCartItem from "../../customer/add-card-item";
 
 export default function MedicineGrid({
   medicines,
@@ -94,14 +88,7 @@ export default function MedicineGrid({
               )}
             </CardContent>
             <CardFooter>
-              <Button
-                size="icon-lg"
-                className="w-full gap-2"
-                disabled={medicine.isOutOfStock}
-              >
-                <ShoppingCart />
-                {medicine.isOutOfStock ? "Unavailable" : "Add to cart"}
-              </Button>
+              <AddCartItem medicine={medicine} />
             </CardFooter>
           </Card>
         );

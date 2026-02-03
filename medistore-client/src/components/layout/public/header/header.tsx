@@ -1,8 +1,12 @@
 "use client";
 
+import CardItemList from "@/components/pages/customer/card-item-list";
 import { Logo } from "@/components/shared/logo";
 import { buttonVariants } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { UserRole } from "@/constants/role.const";
 import { useScroll } from "@/hooks/use-scroll";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import AuthActionButtons from "../auth-action-buttons";
@@ -11,6 +15,7 @@ import { navLinks } from "./nav.data";
 
 export function Header() {
   const scrolled = useScroll(10);
+  const { data, error, isPending } = authClient.useSession();
 
   return (
     <header
@@ -34,6 +39,17 @@ export function Header() {
             </Link>
           ))}
         </div>
+        <>
+          {isPending ? (
+            <Skeleton className="size-10 rounded-full" />
+          ) : error ? (
+            ""
+          ) : data && data.user.role === UserRole.customer ? (
+            <CardItemList />
+          ) : (
+            ""
+          )}
+        </>
         <div className="hidden gap-1 md:flex">
           <AuthActionButtons />
         </div>
