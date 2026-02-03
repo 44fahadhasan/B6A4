@@ -1,6 +1,6 @@
 "use client";
 
-import CardItemList from "@/components/pages/customer/card-item-list";
+import CardItemList from "@/components/pages/customer/cart-item/card-item-list";
 import { Logo } from "@/components/shared/logo";
 import { buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";

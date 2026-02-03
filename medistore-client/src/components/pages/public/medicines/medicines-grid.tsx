@@ -8,7 +8,7 @@ import {
 import { IMedicineCard } from "@/types";
 import { format } from "date-fns";
 import { AlertTriangle, Calendar, Pill, Warehouse } from "lucide-react";
-import AddCartItem from "../../customer/add-card-item";
+import AddCartItem from "../../customer/cart-item/add-card-item";
 
 export default function MedicineGrid({
   medicines,
