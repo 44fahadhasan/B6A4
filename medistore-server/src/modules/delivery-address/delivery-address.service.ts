@@ -1,7 +1,7 @@
 import { prisma } from "../../config/prisma";
 import type { DeliveryAddress } from "../../generated/prisma/client";
 
-const customerdeliveryAddress = async (payload: DeliveryAddress) => {
+const deliveryAddress = async (payload: DeliveryAddress) => {
   const result = await prisma.deliveryAddress.upsert({
     where: {
       userId_contactNumber: {
@@ -15,6 +15,14 @@ const customerdeliveryAddress = async (payload: DeliveryAddress) => {
   return result;
 };
 
+const getDeliveryAddress = async (userId: string) => {
+  const result = await prisma.deliveryAddress.findMany({
+    where: { userId },
+  });
+  return result;
+};
+
 export const deliveryAddressService = {
-  customerdeliveryAddress,
+  deliveryAddress,
+  getDeliveryAddress,
 };

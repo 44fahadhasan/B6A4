@@ -9,7 +9,13 @@ const deliveryAddressRouter = Router();
 deliveryAddressRouter.put(
   "/delivery-address",
   auth(UserRole.customer, [Permission.ADD, Permission.EDIT]),
-  deliveryAddressController.customerdeliveryAddress,
+  deliveryAddressController.deliveryAddress,
+);
+
+deliveryAddressRouter.get(
+  "/delivery-address",
+  auth(UserRole.customer, [Permission.VIEW]),
+  deliveryAddressController.getDeliveryAddress,
 );
 
 export default deliveryAddressRouter;

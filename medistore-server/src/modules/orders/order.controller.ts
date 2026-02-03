@@ -74,7 +74,16 @@ const getOrderForAdmin = async (
 
 const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = await orderService.createOrder(req.body);
+    const { user, body } = req;
+
+    if (!user?.id) {
+      throw new Error("User id is required");
+    }
+
+    const data = await orderService.createOrder({
+      ...body,
+      userId: user?.id,
+    });
 
     sendResponse(res, {
       statusCode: 201,

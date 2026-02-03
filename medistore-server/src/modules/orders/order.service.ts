@@ -232,8 +232,56 @@ const getOrderForAdmin = async (orderId: string) => {
   return result;
 };
 
-const createOrder = async (payload: Order) => {
-  const result = await prisma.order.create({ data: payload });
+export const createOrder = async (payload: any) => {
+  const {
+    userId,
+    pharmacieId,
+    deliveryAddressId,
+    items,
+    discount = 0,
+    tax = 0,
+  } = payload;
+
+  if (!items || items.length === 0) {
+    throw new Error("Order must contain at least one item");
+  }
+
+  let totalAmount = 0;
+
+  for (const item of items) {
+    totalAmount += item.priceAtAdd * item.quantity;
+  }
+
+  const grandTotal = totalAmount - discount + tax;
+
+  const result = await prisma.$transaction(async (tx) => {
+    const order = await tx.order.create({
+      data: {
+        orderNumber: `ORD-${Date.now()}`,
+        userId,
+        pharmacieId,
+        deliveryAddressId,
+        totalAmount: totalAmount,
+        discount,
+        tax,
+        grandTotal: grandTotal,
+        orderItems: {
+          create: items.map((item: any) => ({
+            medicineId: item.medicineId,
+            quantity: item.quantity,
+            price: item.priceAtAdd,
+            subtotal: item.priceAtAdd * item.quantity,
+          })),
+        },
+      },
+      include: {
+        orderItems: true,
+      },
+    });
+
+    return order;
+  });
+
   return result;
 };
 

@@ -21,6 +21,7 @@ import { ICartItemList } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { AddOrder } from "../customer-order/add-order";
 import CartTable from "./cart-table";
 
 export default function CardItemList() {
@@ -148,7 +149,7 @@ export default function CardItemList() {
           />
         </ScrollArea>
         <SheetFooter className="flex flex-col gap-2">
-          <Button className="w-full">Proceed to Checkout</Button>
+          <AddOrder />
           <SheetClose asChild>
             <Button variant="outline" className="w-full">
               Continue Shopping
