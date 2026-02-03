@@ -1,3 +1,4 @@
+export type * from "./medicine.card";
 export type * from "./nav-item.type";
 export type * from "./pagination-options.type";
 export type * from "./query-params.type";

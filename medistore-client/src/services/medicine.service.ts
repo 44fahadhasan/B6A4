@@ -7,7 +7,64 @@ const API_URL = env.BACKEND_API_URL;
 
 export type TMedicineParams = IPaginationOptions & IQueryParams;
 
+export interface IMedicineQueryParams extends IPaginationOptions {
+  search?: string;
+  category?: string;
+  featured?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export const medicineService = {
+  getMedicines: async function (params?: IMedicineQueryParams) {
+    try {
+      const url = new URL(`${API_URL}/medicines`);
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== "") {
+            url.searchParams.append(key, value);
+          }
+        });
+      }
+
+      const api = url.toString();
+
+      const res = await fetch(api, {
+        method: "GET",
+        next: {
+          tags: ["medicines"],
+        },
+        cache: "force-cache",
+      });
+
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+
+      const { success, message, data } = await res.json();
+
+      if (!success) {
+        return {
+          data: null,
+          success,
+          message,
+        };
+      }
+
+      return {
+        data,
+        success,
+        message,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  },
+
   getMedicinesForAdmin: async function (params?: TMedicineParams) {
     try {
       const url = new URL(`${API_URL}/medicines/admin`);

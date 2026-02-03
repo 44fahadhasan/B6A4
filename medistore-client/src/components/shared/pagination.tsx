@@ -35,11 +35,11 @@ export default function Pagination({
 
   return (
     <div className="flex items-center justify-between px-4">
-      <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
+      <div className="text-muted-foreground hidden flex-1 text-sm md:flex">
         Showing {start} to {end} of {totalItems} results
       </div>
-      <div className="flex w-full items-center gap-8 lg:w-fit">
-        <div className="hidden items-center gap-2 lg:flex">
+      <div className="flex w-full items-center gap-8 md:w-fit">
+        <div className="hidden items-center gap-2 md:flex">
           <SelectSearch
             paramName="limit"
             placeholder="12"
@@ -51,11 +51,11 @@ export default function Pagination({
         <div className="flex w-fit items-center justify-center text-sm font-medium">
           Page {currentPage} of {totalPage}
         </div>
-        <div className="ml-auto flex items-center gap-2 lg:ml-0">
+        <div className="ml-auto flex items-center gap-2 md:ml-0">
           <Button
             variant="outline"
             disabled={currentPage === 1}
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden h-8 w-8 p-0 md:flex"
             onClick={() => navigateToPage(1)}
           >
             <span className="sr-only">Go to first page</span>
@@ -84,7 +84,7 @@ export default function Pagination({
           <Button
             size="icon"
             variant="outline"
-            className="hidden size-8 lg:flex"
+            className="hidden size-8 md:flex"
             onClick={() => navigateToPage(totalPage)}
             disabled={currentPage === totalPage}
           >
