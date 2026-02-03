@@ -6,8 +6,7 @@ import type { MedicineWhereInput } from "../../generated/prisma/models";
 import paginationOptions from "../../utils/pagination.util";
 
 const getMedicines = async (req: Request) => {
-  const { search, category, manufacturer, featured, minPrice, maxPrice } =
-    req.query;
+  const { search, category, featured, minPrice, maxPrice } = req.query;
   const { page, limit, skip, orderBy, order } = paginationOptions(req);
 
   const where: MedicineWhereInput = {
@@ -40,11 +39,6 @@ const getMedicines = async (req: Request) => {
           categorie: {
             name: category as string,
           },
-        }
-      : {}),
-    ...(manufacturer
-      ? {
-          manufacturer: manufacturer as string,
         }
       : {}),
     ...(minPrice || maxPrice
