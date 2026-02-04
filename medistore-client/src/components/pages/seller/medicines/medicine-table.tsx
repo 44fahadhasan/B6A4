@@ -23,8 +23,8 @@ import { TCategoryParams } from "@/services/category.service";
 import { MoreHorizontalIcon } from "lucide-react";
 import AddInventory from "../inventories/inventory-add";
 import AddMedicine from "./medicine-add";
-import CategoryDelete from "./medicine-delete";
-import UpdateCategory from "./medicine-update";
+import MedicineDelete from "./medicine-delete";
+import UpdateMedicine from "./medicine-update";
 
 export default async function MedicineTable({
   params,
@@ -96,11 +96,11 @@ export default async function MedicineTable({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem asChild>
-                            <UpdateCategory data={medicine} />
+                            <UpdateMedicine data={medicine} />
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem asChild>
-                            <CategoryDelete medicineId={medicine.id} />
+                            <MedicineDelete medicineId={medicine.id} />
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

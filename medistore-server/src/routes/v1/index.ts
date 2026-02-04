@@ -5,7 +5,7 @@ import deliveryAddressRouter from "../../modules/delivery-address/delivery-addre
 import inventoryRouter from "../../modules/inventories/inventory.route";
 import medicineRouter from "../../modules/medicines/medicine.route";
 import orderRouter from "../../modules/orders/order.route";
-import pharmaceRouter from "../../modules/pharmacies/pharmace.route";
+import pharmacieRouter from "../../modules/pharmacies/pharmacie.route";
 import reviewRouter from "../../modules/reviews/review.route";
 import sellerRouter from "../../modules/sellers/seller.route";
 
@@ -24,7 +24,7 @@ const moduleRouters: IModuleRouter[] = [
   { path: "/seller", router: sellerRouter },
   { path: "/seller", router: orderRouter },
   { path: "/categories", router: categorieRouter },
-  { path: "/pharmaces", router: pharmaceRouter },
+  { path: "/pharmacies", router: pharmacieRouter },
   { path: "/medicines", router: medicineRouter },
   { path: "/inventories", router: inventoryRouter },
   { path: "/orders", router: orderRouter },

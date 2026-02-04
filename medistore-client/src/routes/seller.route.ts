@@ -9,6 +9,10 @@ export const sellerNavs: INavItem[] = [
 
 export const sellerSidebarMenus: ISidebarMenu[] = [
   {
+    title: "Pharmacies",
+    url: "/dashboard/pharmacies",
+  },
+  {
     title: "Medicines",
     url: "/dashboard/medicines",
   },
