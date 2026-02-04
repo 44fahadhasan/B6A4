@@ -34,6 +34,14 @@ enum OrderStatus {
   canceled
 }
 
+enum PharmacieOrderStatus {
+  pending
+  confirmed
+  shipped
+  delivered
+  canceled
+}
+
 enum PaymentMethod {
   cash
   wallet
@@ -196,13 +204,13 @@ model Pharmacie {
   ownerId String
   owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  medicines   Medicine[]
-  orders      Order[]
-  reviews     Review[]
-  cartItems   CartItem[]
-  inventories Inventory[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  medicines       Medicine[]
+  cartItems       CartItem[]
+  inventories     Inventory[]
+  pharmacieOrders PharmacieOrder[]
 
   @@unique([ownerId])
   @@index([name])
@@ -354,41 +362,61 @@ model Order {
 
   status OrderStatus @default(pending)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  confirmedAt DateTime?
+  shippedAt   DateTime?
+  deliveredAt DateTime?
+  canceledAt  DateTime?
 
-  pharmacieId String?
-  pharmacie   Pharmacie? @relation(fields: [pharmacieId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   deliveryAddressId String?
   deliveryAddress   DeliveryAddress? @relation(fields: [deliveryAddressId], references: [id], onDelete: SetNull)
+
+  pharmacieOrders PharmacieOrder[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([orderNumber])
+  @@map("orders")
+}
+
+model PharmacieOrder {
+  id           String               @id @default(ulid())
+  subtotal     Float
+  commission   Float?
+  payoutAmount Float?
+  status       PharmacieOrderStatus @default(pending)
 
   confirmedAt DateTime?
   shippedAt   DateTime?
   deliveredAt DateTime?
   canceledAt  DateTime?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  orderItems  OrderItem[]
-  payments    Payment[]
-  reviews     Review[]
 
-  @@index([userId])
-  @@index([status])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  pharmacieId String
+  pharmacie   Pharmacie @relation(fields: [pharmacieId], references: [id])
+
+  orderItems OrderItem[]
+  payments   Payment[]
+  reviews    Review[]
+
+  @@unique([orderId, pharmacieId])
   @@index([pharmacieId])
-  @@index([orderNumber])
-  @@map("orders")
+  @@index([status])
+  @@map("pharmacie-orders")
 }
 
 model OrderItem {
-  id String @id @default(ulid())
-
-  medicineId String?
-  medicine   Medicine? @relation(fields: [medicineId], references: [id], onDelete: NoAction)
-
-  orderId String
-  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
+  id       String @id @default(ulid())
   quantity Int
   price    Float
   discount Float?
@@ -397,7 +425,13 @@ model OrderItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([orderId])
+  medicineId String
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+
+  pharmacieOrderId String
+  pharmacieOrder   PharmacieOrder @relation(fields: [pharmacieOrderId], references: [id], onDelete: Cascade)
+
+  @@index([pharmacieOrderId])
   @@index([medicineId])
   @@map("order_items")
 }
@@ -411,8 +445,8 @@ model Payment {
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  orderId String?
-  order   Order?  @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  pharmacieOrderId String
+  pharmacieOrder   PharmacieOrder @relation(fields: [pharmacieOrderId], references: [id], onDelete: Cascade)
 
   amount        Float
   transactionId String?
@@ -424,27 +458,14 @@ model Payment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([method])
   @@index([userId])
-  @@index([orderId])
   @@index([transactionId])
+  @@index([pharmacieOrderId])
   @@map("payments")
 }
 
 model Review {
   id String @id @default(ulid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  medicineId String?
-  medicine   Medicine? @relation(fields: [medicineId], references: [id], onDelete: Cascade)
-
-  orderId String?
-  order   Order?  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  pharmacieId String?
-  pharmacie   Pharmacie? @relation(fields: [pharmacieId], references: [id], onDelete: Cascade)
 
   rating  Int
   comment String?
@@ -453,7 +474,16 @@ model Review {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  medicineId String?
+  medicine   Medicine? @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  pharmacieOrderId String
+  pharmacieOrder   PharmacieOrder @relation(fields: [pharmacieOrderId], references: [id], onDelete: Cascade)
+
   @@index([userId])
-  @@index([pharmacieId])
+  @@index([pharmacieOrderId])
   @@map("reviews")
 }
