@@ -19,7 +19,11 @@ const getCartItems = async (
   }
 };
 
-const addCartItem = async (req: Request, res: Response, next: NextFunction) => {
+const mageCartItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { user, body } = req;
 
@@ -27,7 +31,7 @@ const addCartItem = async (req: Request, res: Response, next: NextFunction) => {
       throw new Error("User id is required");
     }
 
-    const data = await cartService.addCartItem({
+    const data = await cartService.mageCartItem({
       ...body,
       userId: user?.id,
     });
@@ -35,28 +39,6 @@ const addCartItem = async (req: Request, res: Response, next: NextFunction) => {
     sendResponse(res, {
       statusCode: 201,
       message: "Cart item added!",
-      data,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const updateCartItem = async (
-  req: Request<{ cartItemId: string }>,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const {
-      params: { cartItemId },
-      body,
-    } = req;
-
-    const data = await cartService.updateCartItem(cartItemId, body);
-
-    sendResponse(res, {
-      message: "Cart item updated!",
       data,
     });
   } catch (error) {
@@ -83,7 +65,6 @@ const deleteCartItem = async (
 
 export const cartItemController = {
   getCartItems,
-  addCartItem,
-  updateCartItem,
+  mageCartItem,
   deleteCartItem,
 };

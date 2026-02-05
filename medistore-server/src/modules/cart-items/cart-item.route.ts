@@ -15,13 +15,7 @@ cartItemRouter.get(
 cartItemRouter.post(
   "/medicine/cart-item/add",
   auth(UserRole.customer, [Permission.ADD]),
-  cartItemController.addCartItem,
-);
-
-cartItemRouter.patch(
-  "/medicine/cart-item/update/:cartItemId",
-  auth(UserRole.customer, [Permission.EDIT]),
-  cartItemController.updateCartItem,
+  cartItemController.mageCartItem,
 );
 
 cartItemRouter.delete(

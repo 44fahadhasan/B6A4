@@ -43,7 +43,7 @@ export function AddOrder() {
 
       if (successCart) {
         setCartItems(
-          cartData.cartItems.map((item: any) => ({
+          cartData.map((item: any) => ({
             medicineId: item.medicineId,
             quantity: item.quantity,
             priceAtAdd: item.priceAtAdd,

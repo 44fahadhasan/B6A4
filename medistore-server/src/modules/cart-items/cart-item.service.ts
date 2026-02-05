@@ -1,54 +1,96 @@
 import type { Request } from "express";
 import { prisma } from "../../config/prisma";
 import type { CartItem } from "../../generated/prisma/client";
-import paginationOptions from "../../utils/pagination.util";
 
 const getCartItems = async (req: Request) => {
-  const { page, limit, skip } = paginationOptions(req);
   const { user } = req;
 
   if (!user?.id) {
     throw new Error("User id is required");
   }
 
-  const [cartItems, total] = await prisma.$transaction([
-    prisma.cartItem.findMany({
-      skip,
-      take: limit,
-      where: {
-        userId: user?.id,
-      },
-      include: {
-        medicine: {
-          select: {
-            name: true,
-            genericName: true,
-            brandName: true,
-            categorie: {
-              select: {
-                name: true,
-              },
+  const result = await prisma.cartItem.findMany({
+    where: { userId: user?.id },
+    include: {
+      medicine: {
+        select: {
+          id: true,
+          name: true,
+          genericName: true,
+          brandName: true,
+          categorie: {
+            select: {
+              name: true,
             },
           },
         },
       },
-    }),
-    prisma.cartItem.count(),
-  ]);
+      pharmacie: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
-  return { cartItems, meta: { page, limit, total } };
-};
-
-const addCartItem = async (payload: CartItem) => {
-  const result = await prisma.cartItem.create({ data: payload });
   return result;
 };
 
-const updateCartItem = async (cartItemId: string, payload: CartItem) => {
-  const result = await prisma.cartItem.update({
-    data: payload,
-    where: { id: cartItemId },
+const mageCartItem = async (
+  payload: CartItem & { actionLabel: "increment" | "decrement" },
+) => {
+  const inventory = await prisma.inventory.findFirstOrThrow({
+    where: {
+      isExpired: false,
+      medicineId: payload.medicineId,
+      pharmacieId: payload.pharmacieId,
+    },
+    orderBy: { expiryDate: "asc" },
   });
+
+  if (inventory.stock - inventory.reservedQty - payload.quantity <= 0) {
+    throw new Error("Stock not available");
+  }
+
+  const isAlreadyInCart = await prisma.cartItem.findUnique({
+    where: {
+      userId_medicineId: {
+        userId: payload.userId,
+        medicineId: payload.medicineId,
+      },
+    },
+  });
+
+  if (isAlreadyInCart) {
+    if (isAlreadyInCart.quantity <= 1 && payload.actionLabel === "decrement") {
+      return;
+    }
+
+    const result = prisma.cartItem.update({
+      where: { id: isAlreadyInCart.id },
+      data: {
+        quantity: { [payload.actionLabel]: 1 },
+        priceAtAdd: inventory.sellingPrice,
+      },
+    });
+
+    return result;
+  }
+
+  const { actionLabel, quantity = 1, ...rest } = payload;
+
+  const result = await prisma.cartItem.create({
+    data: {
+      ...rest,
+      quantity,
+      priceAtAdd: inventory.sellingPrice,
+    },
+  });
+
   return result;
 };
 
@@ -59,7 +101,6 @@ const deleteCartItem = async (cartItemId: string) => {
 
 export const cartService = {
   getCartItems,
-  addCartItem,
-  updateCartItem,
+  mageCartItem,
   deleteCartItem,
 };

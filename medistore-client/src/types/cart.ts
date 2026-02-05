@@ -1,17 +1,18 @@
 export interface ICartItem {
   id?: string;
   quantity: number;
-  priceAtAdd: number;
+  priceAtAdd?: number;
   medicineId: string;
   pharmacieId: string;
+  actionLabel: "increment" | "decrement";
 }
 
 export interface ICartItemList {
   id: string;
   quantity: number;
   priceAtAdd: number;
-  addedAt: string;
   medicine: {
+    id: string;
     name: string;
     genericName: string;
     brandName?: string;
@@ -19,8 +20,7 @@ export interface ICartItemList {
       name?: string;
     };
   };
-}
-
-export interface ICartItemUpdate {
-  quantity: number;
+  pharmacie: {
+    id: string;
+  };
 }

@@ -1,11 +1,14 @@
 "use client";
 
-import {
-  deleteCartItem,
-  getCartItems,
-  updateCartItem,
-} from "@/actions/cart-item.action";
+import { getCartItems } from "@/actions/cart-item.action";
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
@@ -19,102 +22,42 @@ import {
 } from "@/components/ui/sheet";
 import { ICartItemList } from "@/types";
 import { ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { AddOrder } from "../customer-order/add-order";
 import CartTable from "./cart-table";
 
 export default function CardItemList() {
   const [cartItems, setCartItems] = useState<ICartItemList[]>([]);
-  const [loadingIds, setLoadingIds] = useState<string[]>([]);
+  const [refetchFlag, setRefetchFlag] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  const router = useRouter();
 
   useEffect(() => {
-    (async () => {
-      const { success, data } = await getCartItems();
-      if (success) setCartItems(data.cartItems);
-    })();
+    try {
+      (async () => {
+        const { success, message, data } = await getCartItems();
+
+        if (!success) {
+          setError(message);
+        }
+
+        if (success) setCartItems(data);
+      })();
+    } catch (error) {
+      setError(`${(error as Error).message}: Relaod page`);
+    }
+  }, [refetchFlag]);
+
+  useEffect(() => {
+    const cartAction = () => setRefetchFlag((pre) => !pre);
+
+    cartAction();
+
+    window.addEventListener("cart_action", cartAction);
+    return () => window.removeEventListener("cart_action", cartAction);
   }, []);
-
-  const handleIncrease = async (item: ICartItemList) => {
-    setLoadingIds((prev) => [...prev, item.id]);
-    const toastId = toast.loading("Updating cart...");
-
-    try {
-      const { success, message } = await updateCartItem({
-        id: item.id,
-        payload: { quantity: item.quantity + 1 },
-      });
-
-      if (!success) {
-        toast.error(message, { id: toastId });
-        return;
-      }
-
-      setCartItems((prev) =>
-        prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
-        ),
-      );
-
-      toast.success(message, { id: toastId });
-    } catch (error) {
-      toast.error("Something went wrong", { id: toastId });
-    } finally {
-      setLoadingIds((prev) => prev.filter((id) => id !== item.id));
-    }
-  };
-
-  const handleDecrease = async (item: ICartItemList) => {
-    if (item.quantity === 1) return;
-
-    setLoadingIds((prev) => [...prev, item.id]);
-    const toastId = toast.loading("Updating cart...");
-
-    try {
-      const { success, message } = await updateCartItem({
-        id: item.id,
-        payload: { quantity: item.quantity - 1 },
-      });
-
-      if (!success) {
-        toast.error(message, { id: toastId });
-        return;
-      }
-
-      setCartItems((prev) =>
-        prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i,
-        ),
-      );
-
-      toast.success(message, { id: toastId });
-    } catch (error) {
-      toast.error("Something went wrong", { id: toastId });
-    } finally {
-      setLoadingIds((prev) => prev.filter((id) => id !== item.id));
-    }
-  };
-
-  const handleRemove = async (item: ICartItemList) => {
-    setLoadingIds((prev) => [...prev, item.id]);
-    const toastId = toast.loading("Removing item...");
-
-    try {
-      const { success, message } = await deleteCartItem(item.id);
-
-      if (!success) {
-        toast.error(message, { id: toastId });
-        return;
-      }
-
-      setCartItems((prev) => prev.filter((i) => i.id !== item.id));
-      toast.success(message, { id: toastId });
-    } catch (error) {
-      toast.error("Something went wrong", { id: toastId });
-    } finally {
-      setLoadingIds((prev) => prev.filter((id) => id !== item.id));
-    }
-  };
 
   return (
     <Sheet>
@@ -132,28 +75,57 @@ export default function CardItemList() {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent side="left">
+      <SheetContent side="left" className="data-[side=left]:sm:max-w-lg">
         <SheetHeader>
-          <SheetTitle>Your Cart</SheetTitle>
+          <SheetTitle>Your Cart ({cartItems.length})</SheetTitle>
           <SheetDescription>
             Review your selected medicines before placing your order.
           </SheetDescription>
         </SheetHeader>
         <ScrollArea className="h-[50vh]">
-          <CartTable
-            items={cartItems}
-            onIncrease={handleIncrease}
-            onDecrease={handleDecrease}
-            onRemove={handleRemove}
-            loadingIds={loadingIds}
-          />
+          {error ? (
+            <p className="text-destructive">{error}</p>
+          ) : cartItems.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <ShoppingCart className="text-destructive" />
+                </EmptyMedia>
+                <EmptyTitle>Your Cart is Empty</EmptyTitle>
+                <EmptyDescription>
+                  You haven’t added any items to your cart yet. Browse products
+                  and add them to get started.
+                </EmptyDescription>
+                <SheetClose asChild>
+                  <Button
+                    onClick={() => router.push("/medicines")}
+                    className="w-full"
+                  >
+                    Continue Shopping
+                  </Button>
+                </SheetClose>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <CartTable items={cartItems} setRefetchFlag={setRefetchFlag} />
+          )}
         </ScrollArea>
         <SheetFooter className="flex flex-col gap-2">
-          <AddOrder />
+          {cartItems.length > 0 && <AddOrder />}
           <SheetClose asChild>
-            <Button variant="outline" className="w-full">
-              Continue Shopping
-            </Button>
+            {cartItems.length === 0 ? (
+              <Button variant="outline" className="w-full">
+                Close
+              </Button>
+            ) : (
+              <Button
+                onClick={() => router.push("/medicines")}
+                variant="outline"
+                className="w-full"
+              >
+                Continue Shopping
+              </Button>
+            )}
           </SheetClose>
         </SheetFooter>
       </SheetContent>

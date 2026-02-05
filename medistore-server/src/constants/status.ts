@@ -1,7 +1,2 @@
-export const Status = ["draft", "archived", "published"] as const;
-export const PharmacieStatus = [
-  "active",
-  "inactive",
-  "suspended",
-  "blocked",
-] as const;
+export const Status = ["draft", "archived", "published"];
+export const PharmacieStatus = ["active", "inactive", "suspended", "blocked"];

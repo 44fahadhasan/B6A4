@@ -1,38 +1,43 @@
 "use client";
 
-import { createCartItem } from "@/actions/cart-item.action";
+import { mageCartItem } from "@/actions/cart-item.action";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { IMedicineCard } from "@/types";
 import { ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function AddCartItem({
-  quantity,
   medicine,
   className,
 }: {
-  quantity: number;
   className?: string;
   medicine: IMedicineCard;
 }) {
+  const [cartAction, setCartAction] = useState<boolean>(false);
+
+  useEffect(() => {
+    window.dispatchEvent(new Event("cart_action"));
+  }, [cartAction]);
+
   const handleAddCartItem = async () => {
     const id = toast.loading("Add item to cart, please wait...");
 
     try {
-      const payload = {
-        quantity,
-        priceAtAdd: medicine.stock?.sellingPrice!,
-        pharmacieId: medicine.pharmacie.id,
+      const { success, message } = await mageCartItem({
+        quantity: 1,
+        actionLabel: "increment",
         medicineId: medicine.id,
-      };
-
-      const { success, message } = await createCartItem(payload);
+        pharmacieId: medicine.pharmacie.id,
+        priceAtAdd: medicine.stock?.sellingPrice,
+      });
 
       if (!success) {
-        return toast.error("Already added in cart", { id });
+        return toast.error(message, { id });
       }
 
+      setCartAction((pre) => !pre);
       toast.success(message, { id });
     } catch (error) {
       toast.error("Something went wrong", { id });
