@@ -5,15 +5,8 @@ export interface IOrderItem {
 }
 
 export interface IOrder {
-  pharmacieId?: string;
   deliveryAddressId: string;
-  discount?: number;
-  tax?: number;
-  items: {
-    medicineId: string;
-    quantity: number;
-    priceAtAdd: number;
-  }[];
+  payment: { method: string };
 }
 
 export type TOrders = IOrder & IOrderItem;

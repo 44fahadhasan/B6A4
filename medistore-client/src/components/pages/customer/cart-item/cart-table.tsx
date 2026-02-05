@@ -33,8 +33,6 @@ export default function CartTable({
   }) => {
     const toastId = toast.loading("Updating cart...");
 
-    console.log(item.medicine.id);
-
     try {
       const payload = {
         quantity: 1,

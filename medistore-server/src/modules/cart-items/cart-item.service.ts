@@ -2,6 +2,37 @@ import type { Request } from "express";
 import { prisma } from "../../config/prisma";
 import type { CartItem } from "../../generated/prisma/client";
 
+const getCartItemsForOrder = async (userId: string) => {
+  const result = await prisma.$queryRaw<
+    {
+      pharmacieId: string;
+      order_items: {
+        quantity: number;
+        price: number;
+        medicineId: string;
+      };
+    }[]
+  >`
+  select
+  ci."pharmacieId",
+  json_agg(
+    json_build_object(
+      'quantity', ci."quantity",
+      'price', ci."priceAtAdd",
+      'medicineId', ci."medicineId"
+    )
+  ) as "orderItems"
+  from
+    cart_items as ci
+  where
+    ci."userId" = ${userId}
+  group by
+    ci."pharmacieId"
+  `;
+
+  return result;
+};
+
 const getCartItems = async (req: Request) => {
   const { user } = req;
 
@@ -103,4 +134,5 @@ export const cartService = {
   getCartItems,
   mageCartItem,
   deleteCartItem,
+  getCartItemsForOrder,
 };

@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import sendResponse from "../../utils/send-response.util";
+import { cartService } from "../cart-items/cart-item.service";
 import { orderService } from "./order.service";
 
 const getOrdersForCustomer = async (
@@ -80,9 +81,16 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
       throw new Error("User id is required");
     }
 
+    const cartItems = await cartService.getCartItemsForOrder(user.id);
+
+    if (!cartItems.length) {
+      throw new Error("Your cart is empty");
+    }
+
     const data = await orderService.createOrder({
       ...body,
-      userId: user?.id,
+      userId: user.id,
+      pharmacyOrders: cartItems,
     });
 
     sendResponse(res, {
