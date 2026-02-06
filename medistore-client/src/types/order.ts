@@ -9,4 +9,9 @@ export interface IOrder {
   payment: { method: string };
 }
 
+export type TOrderUpdate = {
+  status: string;
+  orderId: string;
+};
+
 export type TOrders = IOrder & IOrderItem;

@@ -124,7 +124,7 @@ export default function UserTable({ params }: { params: TCategoryParams }) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-12 text-left">S. No.</TableHead>
+              <TableHead className="w-12 text-left">#</TableHead>
               <TableHead>User Details</TableHead>
               <TableHead>Role & Status</TableHead>
               <TableHead>Email Verification</TableHead>

@@ -49,7 +49,7 @@ export default async function PharmacyTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-12 text-left">S. No.</TableHead>
+              <TableHead className="w-12 text-left">#</TableHead>
               <TableHead>Pharmacy</TableHead>
               <TableHead>Contact</TableHead>
               <TableHead>Status</TableHead>

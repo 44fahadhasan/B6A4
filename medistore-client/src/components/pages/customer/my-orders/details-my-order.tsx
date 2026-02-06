@@ -137,7 +137,7 @@ export default async function DetailsMyOrder({ orderId }: { orderId: string }) {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>S. No.</TableHead>
+                    <TableHead>#</TableHead>
                     <TableHead>Medicine ID</TableHead>
                     <TableHead className="text-right">Quantity</TableHead>
                     <TableHead className="text-right">Price</TableHead>

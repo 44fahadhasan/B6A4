@@ -41,7 +41,7 @@ export default async function MedicineTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-12 text-left">S. No.</TableHead>
+              <TableHead className="w-12 text-left">#</TableHead>
               <TableHead>Medicine Details</TableHead>
               <TableHead>Dosage & Form</TableHead>
               <TableHead>Pharmacy & Owner</TableHead>

@@ -2,6 +2,7 @@ import MyOrderTable from "@/components/pages/customer/my-orders/my-order-table";
 import InputSearch from "@/components/shared/input-search";
 import PageContentHeader from "@/components/shared/page-content-header";
 import SelectSearch from "@/components/shared/select-search";
+import { orderStatus } from "@/constants/order.status";
 import { IOrderQueryParams } from "@/services/customer.service";
 
 export default async function MyOrdersPage({
@@ -30,13 +31,7 @@ export default async function MyOrdersPage({
               placeholder="Filter by status"
               id="status"
               label=""
-              listItems={[
-                "pending",
-                "confirmed",
-                "shipped",
-                "delivered",
-                "canceled",
-              ]}
+              listItems={orderStatus}
             />
           </div>
         </div>

@@ -46,7 +46,7 @@ export default async function CategoryTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>S. No.</TableHead>
+              <TableHead>#</TableHead>
               <TableHead>Category Name</TableHead>
               <TableHead>Slug</TableHead>
               <TableHead className="text-right">Actions</TableHead>

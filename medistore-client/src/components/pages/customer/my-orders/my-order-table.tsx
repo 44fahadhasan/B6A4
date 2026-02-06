@@ -45,7 +45,7 @@ export default async function MyOrderTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-12">S. No.</TableHead>
+              <TableHead className="w-12">#</TableHead>
               <TableHead>Order No</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Status</TableHead>

@@ -54,7 +54,7 @@ export default async function InventoryTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-12 text-left">S. No.</TableHead>
+              <TableHead className="w-12 text-left">#</TableHead>
               <TableHead>Medicine Details</TableHead>
               <TableHead>Stock Info</TableHead>
               <TableHead>Status</TableHead>
