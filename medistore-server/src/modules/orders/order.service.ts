@@ -6,12 +6,14 @@ import type {
   OrderItem,
   Payment,
   PharmacieOrder,
+  PharmacieOrderStatus,
   OrderStatus as TOrderStatus,
 } from "../../generated/prisma/client";
 import type {
   OrderWhereInput,
   PharmacieOrderWhereInput,
 } from "../../generated/prisma/models";
+import calculateOrderStatus from "../../utils/assign-order-status";
 import paginationOptions from "../../utils/pagination.util";
 
 type TCreateOrder = Order & {
@@ -120,12 +122,16 @@ const getOrdersForSeller = async (req: Request) => {
       where,
       orderBy: { [orderBy]: order },
       select: {
+        id: true,
+        status: true,
         order: {
           select: {
+            id: true,
             createdAt: true,
             orderNumber: true,
             pharmacieOrders: {
               select: {
+                id: true,
                 orderItems: {
                   select: {
                     medicine: {
@@ -150,7 +156,6 @@ const getOrdersForSeller = async (req: Request) => {
             },
           },
         },
-        status: true,
       },
     }),
     prisma.pharmacieOrder.count({ where }),
@@ -380,11 +385,45 @@ const createOrder = async (payload: TCreateOrder) => {
   return result;
 };
 
-const updateOrder = async (orderId: string, payload: Order) => {
-  const result = await prisma.order.update({
-    data: payload,
-    where: { id: orderId },
+const updateOrder = async (
+  phOrderId: string,
+  payload: { status: PharmacieOrderStatus; orderId: string },
+) => {
+  const result = await prisma.$transaction(async (tx) => {
+    const resPhOrderId = await tx.pharmacieOrder.update({
+      where: { id: phOrderId },
+      data: {
+        status: payload.status,
+        ...(payload.status === "confirmed" && { confirmedAt: new Date() }),
+        ...(payload.status === "shipped" && { shippedAt: new Date() }),
+        ...(payload.status === "delivered" && { deliveredAt: new Date() }),
+        ...(payload.status === "canceled" && { canceledAt: new Date() }),
+      },
+    });
+
+    const pharmacyOrders = await tx.pharmacieOrder.findMany({
+      where: { orderId: payload.orderId },
+      select: { status: true },
+    });
+
+    const statuses = pharmacyOrders.map((p) => p.status);
+
+    const newOrderStatus = calculateOrderStatus(statuses);
+
+    const resOrder = await tx.order.update({
+      where: { id: payload.orderId },
+      data: {
+        status: newOrderStatus,
+        ...(newOrderStatus === "confirmed" && { confirmedAt: new Date() }),
+        ...(newOrderStatus === "shipped" && { shippedAt: new Date() }),
+        ...(newOrderStatus === "delivered" && { deliveredAt: new Date() }),
+        ...(newOrderStatus === "canceled" && { canceledAt: new Date() }),
+      },
+    });
+
+    return { resPhOrderId, resOrder };
   });
+
   return result;
 };
 
