@@ -116,7 +116,22 @@ const getOrderForCustomer = async (orderId: string) => {
       pharmacieOrders: {
         include: {
           _count: true,
-          orderItems: true,
+          orderItems: {
+            include: {
+              medicine: {
+                select: {
+                  name: true,
+                  genericName: true,
+                  brandName: true,
+                  categorie: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           order: true,
           payments: true,
           pharmacie: true,
@@ -124,6 +139,7 @@ const getOrderForCustomer = async (orderId: string) => {
       },
     },
   });
+
   return result;
 };
 

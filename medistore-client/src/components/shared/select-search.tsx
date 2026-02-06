@@ -42,7 +42,7 @@ export default function SelectSearch({
         </SelectTrigger>
         <SelectContent side="top">
           {listItems.map((item) => (
-            <SelectItem key={item} value={`${item}`}>
+            <SelectItem className="capitalize" key={item} value={`${item}`}>
               {item}
             </SelectItem>
           ))}
