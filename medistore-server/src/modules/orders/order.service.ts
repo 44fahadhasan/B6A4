@@ -97,7 +97,7 @@ const getOrdersForAdmin = async (req: Request) => {
       include: {
         pharmacieOrders: {
           include: {
-            _count: tr,
+            _count: true,
           },
         },
       },
@@ -111,6 +111,18 @@ const getOrdersForAdmin = async (req: Request) => {
 const getOrderForCustomer = async (orderId: string) => {
   const result = await prisma.order.findUnique({
     where: { id: orderId },
+    include: {
+      deliveryAddress: true,
+      pharmacieOrders: {
+        include: {
+          _count: true,
+          orderItems: true,
+          order: true,
+          payments: true,
+          pharmacie: true,
+        },
+      },
+    },
   });
   return result;
 };
