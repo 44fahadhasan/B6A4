@@ -20,6 +20,23 @@ const getOrdersForCustomer = async (
   }
 };
 
+const getOrdersForSeller = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await orderService.getOrdersForSeller(req);
+
+    sendResponse(res, {
+      message: "Orders get!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getOrdersForAdmin = async (
   req: Request,
   res: Response,
@@ -144,6 +161,7 @@ const deleteOrder = async (
 
 export const orderController = {
   getOrdersForCustomer,
+  getOrdersForSeller,
   getOrdersForAdmin,
   getOrderForCustomer,
   getOrderForAdmin,

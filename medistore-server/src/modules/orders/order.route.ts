@@ -13,6 +13,12 @@ orderRouter.get(
 );
 
 orderRouter.get(
+  "/seller",
+  auth(UserRole.seller, [Permission.VIEW]),
+  orderController.getOrdersForSeller,
+);
+
+orderRouter.get(
   "/",
   auth(UserRole.admin, [Permission.VIEW]),
   orderController.getOrdersForAdmin,
@@ -43,7 +49,7 @@ orderRouter.patch(
 );
 
 orderRouter.delete(
-  "/order/delete/:orderId",
+  "/orders/order/delete/:orderId",
   auth(UserRole.admin, [Permission.DELETE]),
   orderController.deleteOrder,
 );

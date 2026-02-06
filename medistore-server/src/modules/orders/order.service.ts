@@ -8,7 +8,10 @@ import type {
   PharmacieOrder,
   OrderStatus as TOrderStatus,
 } from "../../generated/prisma/client";
-import type { OrderWhereInput } from "../../generated/prisma/models";
+import type {
+  OrderWhereInput,
+  PharmacieOrderWhereInput,
+} from "../../generated/prisma/models";
 import paginationOptions from "../../utils/pagination.util";
 
 type TCreateOrder = Order & {
@@ -19,10 +22,16 @@ type TCreateOrder = Order & {
 };
 
 const getOrdersForCustomer = async (req: Request) => {
+  const { user } = req;
   const { search, status } = req.query;
   const { page, limit, skip, orderBy, order } = paginationOptions(req);
 
+  if (!user?.id) {
+    throw new Error("User id is required");
+  }
+
   const where: OrderWhereInput = {
+    userId: user.id,
     ...(status && OrderStatus.includes(status as string)
       ? {
           status: status as TOrderStatus,
@@ -50,6 +59,101 @@ const getOrdersForCustomer = async (req: Request) => {
       orderBy: { [orderBy]: order },
     }),
     prisma.order.count({ where }),
+  ]);
+
+  return { orders, meta: { page, limit, total } };
+};
+
+const getOrdersForSeller = async (req: Request) => {
+  const { user } = req;
+  const { search, status } = req.query;
+  const { page, limit, skip, orderBy, order } = paginationOptions(req);
+
+  if (!user?.pharmacieId) {
+    throw new Error("Pharmacie id is required");
+  }
+
+  const where: PharmacieOrderWhereInput = {
+    ...(status && OrderStatus.includes(status as string)
+      ? { status: status as TOrderStatus }
+      : {}),
+    ...(search
+      ? {
+          OR: [
+            {
+              order: {
+                orderNumber: {
+                  contains: search as string,
+                  mode: "insensitive",
+                },
+              },
+            },
+            {
+              order: {
+                user: {
+                  name: {
+                    contains: search as string,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+            {
+              order: {
+                user: {
+                  email: {
+                    contains: search as string,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+          ],
+        }
+      : {}),
+  };
+
+  const [orders, total] = await prisma.$transaction([
+    prisma.pharmacieOrder.findMany({
+      skip,
+      take: limit,
+      where,
+      orderBy: { [orderBy]: order },
+      select: {
+        order: {
+          select: {
+            createdAt: true,
+            orderNumber: true,
+            pharmacieOrders: {
+              select: {
+                orderItems: {
+                  select: {
+                    medicine: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    quantity: true,
+                    subtotal: true,
+                  },
+                },
+              },
+            },
+            status: true,
+            totalAmount: true,
+            grandTotal: true,
+            user: {
+              select: {
+                name: true,
+                email: true,
+              },
+            },
+          },
+        },
+        status: true,
+      },
+    }),
+    prisma.pharmacieOrder.count({ where }),
   ]);
 
   return { orders, meta: { page, limit, total } };
@@ -291,6 +395,7 @@ const deleteOrder = async (orderId: string) => {
 
 export const orderService = {
   getOrdersForCustomer,
+  getOrdersForSeller,
   getOrdersForAdmin,
   getOrderForCustomer,
   getOrderForAdmin,
