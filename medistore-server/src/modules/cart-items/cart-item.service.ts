@@ -130,9 +130,17 @@ const deleteCartItem = async (cartItemId: string) => {
   return result;
 };
 
+const clearCart = async (cartIds: string[]) => {
+  const result = await prisma.cartItem.deleteMany({
+    where: { id: { in: cartIds } },
+  });
+  return result;
+};
+
 export const cartService = {
   getCartItems,
   mageCartItem,
   deleteCartItem,
   getCartItemsForOrder,
+  clearCart,
 };

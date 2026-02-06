@@ -63,8 +63,22 @@ const deleteCartItem = async (
   }
 };
 
+const clearCart = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await cartService.clearCart(req.body);
+
+    sendResponse(res, {
+      message: "Cart item deleted!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const cartItemController = {
   getCartItems,
   mageCartItem,
   deleteCartItem,
+  clearCart,
 };

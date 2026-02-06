@@ -24,4 +24,10 @@ cartItemRouter.delete(
   cartItemController.deleteCartItem,
 );
 
+cartItemRouter.post(
+  "/medicine/cart-item/clear",
+  auth(UserRole.customer, [Permission.DELETE]),
+  cartItemController.clearCart,
+);
+
 export default cartItemRouter;
