@@ -28,3 +28,13 @@ export async function deleteCartItem(id: string) {
 
   return res;
 }
+
+export async function clearCart(ids: string[]) {
+  const res = await cartitemService.clearCart(ids);
+
+  if (res.success) {
+    revalidateTag("carts", "max");
+  }
+
+  return res;
+}

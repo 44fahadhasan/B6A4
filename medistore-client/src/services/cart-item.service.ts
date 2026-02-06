@@ -130,4 +130,47 @@ export const cartitemService = {
       };
     }
   },
+
+  clearCart: async function (ids: string[]) {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/customers/medicine/cart-item/clear`, {
+        method: "POST",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ids),
+      });
+
+      console.log(res);
+
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+
+      const { success, message, data } = await res.json();
+
+      if (!success) {
+        return {
+          data: null,
+          success,
+          message,
+        };
+      }
+
+      return {
+        data,
+        success,
+        message,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  },
 };

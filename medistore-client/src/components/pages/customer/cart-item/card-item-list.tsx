@@ -1,6 +1,9 @@
 "use client";
 
-import { getCartItems } from "@/actions/cart-item.action";
+import {
+  clearCart as deleteCartItems,
+  getCartItems,
+} from "@/actions/cart-item.action";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -46,18 +49,31 @@ export default function CardItemList() {
         if (success) setCartItems(data);
       })();
     } catch (error) {
-      setError(`${(error as Error).message}: Relaod page`);
+      setError(`${(error as Error).message}: Reload page`);
     }
   }, [refetchFlag]);
 
   useEffect(() => {
     const cartAction = () => setRefetchFlag((pre) => !pre);
 
-    cartAction();
+    const clearCart = async () => {
+      if (cartItems.length === 0) return;
+
+      const ids: string[] = cartItems.map((item) => item.id);
+
+      const { ...rest } = await deleteCartItems(ids);
+
+      cartAction();
+    };
 
     window.addEventListener("cart_action", cartAction);
-    return () => window.removeEventListener("cart_action", cartAction);
-  }, []);
+    window.addEventListener("clear_cart", clearCart);
+
+    return () => {
+      window.removeEventListener("cart_action", cartAction);
+      window.removeEventListener("clear_cart", clearCart);
+    };
+  }, [cartItems]);
 
   return (
     <Sheet>

@@ -61,6 +61,9 @@ export function AddOrder() {
         return;
       }
 
+      window.dispatchEvent(new Event("clear_cart"));
+      window.dispatchEvent(new Event("cart_action"));
+
       toast.success(message, { id: toastId });
     } catch (error) {
       toast.error("Something went wrong", { id: toastId });
