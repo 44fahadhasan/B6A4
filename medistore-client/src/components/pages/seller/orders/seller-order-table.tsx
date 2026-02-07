@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -28,7 +27,7 @@ import {
 import { TOrderParams } from "@/services/orders.service";
 import { Inbox, MoreHorizontalIcon } from "lucide-react";
 import OrderStatusModal from "./order-status-modal";
-import SellerOrderDetails from "./seller-order-details";
+import SellerOrderDetailsModal from "./seller-order-details-modal";
 
 export default async function SellerOrderTable({
   params,
@@ -159,7 +158,7 @@ export default async function SellerOrderTable({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="space-y-1">
                           <DropdownMenuItem asChild>
-                            <SellerOrderDetails />
+                            <SellerOrderDetailsModal orderId={order.id} />
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <OrderStatusModal
@@ -168,7 +167,6 @@ export default async function SellerOrderTable({
                               status={phOrder.status}
                             />
                           </DropdownMenuItem>
-                          <DropdownMenuSeparator />
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

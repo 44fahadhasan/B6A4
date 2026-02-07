@@ -101,7 +101,6 @@ const updateInventory = async (inventoryId: string, payload: Inventory) => {
 };
 
 const deleteInventory = async (inventoryId: string) => {
-  console.log({ inventoryId });
   const result = await prisma.inventory.delete({ where: { id: inventoryId } });
   return result;
 };

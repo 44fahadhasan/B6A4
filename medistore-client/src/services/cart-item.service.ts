@@ -144,8 +144,6 @@ export const cartitemService = {
         body: JSON.stringify(ids),
       });
 
-      console.log(res);
-
       if (!res.ok) {
         throw new Error(res.statusText);
       }

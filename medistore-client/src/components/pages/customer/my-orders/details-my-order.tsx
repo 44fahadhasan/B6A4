@@ -46,8 +46,6 @@ export default async function DetailsMyOrder({ orderId }: { orderId: string }) {
     }
   };
 
-  console.log(data);
-
   return (
     <Dialog>
       <DialogTrigger asChild>

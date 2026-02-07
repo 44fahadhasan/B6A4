@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Star } from "lucide-react";
 
 interface IFromModal {
   formType: "add" | "update";
@@ -37,11 +37,13 @@ export default function FormModal({
     <Dialog>
       <DialogTrigger asChild>
         <Button
+          size={triggerLabel === "Review" ? "xs" : "default"}
           variant={formType === "update" ? "outline" : "default"}
           className={cn(formType === "update" && "w-full")}
         >
-          {formType === "add" && <PlusCircle />}
           {triggerLabel}
+          {formType === "add" && triggerLabel !== "Review" && <PlusCircle />}
+          {formType === "add" && triggerLabel === "Review" && <Star />}
         </Button>
       </DialogTrigger>
       <DialogContent

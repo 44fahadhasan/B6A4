@@ -59,8 +59,48 @@ const getReviewsForAdmin = async (req: Request) => {
   return { review, meta: { page, limit, total } };
 };
 
-const addReview = async (payload: Review) => {
-  const result = await prisma.review.create({ data: payload });
+const addReview = async (payload: Review & { orderId: string }) => {
+  const result = await prisma.$transaction(async (tx) => {
+    const phOrders = await tx.pharmacieOrder.findMany({
+      where: {
+        status: "delivered",
+        orderId: payload.orderId,
+        order: { userId: payload.userId },
+      },
+      select: { id: true },
+    });
+
+    if (!phOrders.length) {
+      throw new Error("No delivered pharmacy orders found for this user");
+    }
+
+    const reviews = [];
+
+    for (const phOrder of phOrders) {
+      const alreadyReviewed = await tx.review.findFirst({
+        where: {
+          userId: payload.userId,
+          pharmacieOrderId: phOrder.id,
+        },
+      });
+
+      if (alreadyReviewed) continue;
+
+      const newReview = await tx.review.create({
+        data: {
+          userId: payload.userId,
+          pharmacieOrderId: phOrder.id,
+          rating: payload.rating,
+          comment: payload.comment,
+        },
+      });
+
+      reviews.push(newReview);
+    }
+
+    return reviews;
+  });
+
   return result;
 };
 

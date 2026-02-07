@@ -17,10 +17,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 import { IOrderQueryParams } from "@/services/customer.service";
 import { format } from "date-fns";
 import { Inbox } from "lucide-react";
+import AddReview from "./add-review";
 import DetailsMyOrder from "./details-my-order";
 
 export default async function MyOrderTable({
@@ -81,21 +81,27 @@ export default async function MyOrderTable({
                   </TableCell>
                   <TableCell>{format(order.createdAt, "PPP")}</TableCell>
                   <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "capitalize",
-                        order.status === "pending"
-                          ? "border-yellow-500 text-yellow-600 bg-yellow-50"
-                          : order.status === "shipped"
-                            ? "border-blue-500 text-blue-600 bg-blue-50"
-                            : order.status === "delivered"
-                              ? "border-green-500 text-green-600 bg-green-50"
-                              : "border-red-500 text-red-600 bg-red-50",
+                    <div className="flex items-center gap-1">
+                      <Badge
+                        className="capitalize"
+                        variant={
+                          order.status === "pending"
+                            ? "secondary"
+                            : order.status === "confirmed"
+                              ? "default"
+                              : order.status === "shipped"
+                                ? "outline"
+                                : order.status === "delivered"
+                                  ? "ghost"
+                                  : "destructive"
+                        }
+                      >
+                        {order.status}
+                      </Badge>
+                      {order.status === "delivered" && (
+                        <AddReview orderId={order.id} />
                       )}
-                    >
-                      {order.status}
-                    </Badge>
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     ${order.totalAmount.toFixed(2)}

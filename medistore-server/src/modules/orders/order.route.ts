@@ -31,6 +31,12 @@ orderRouter.get(
 );
 
 orderRouter.get(
+  "/order/seller/:orderId",
+  auth(UserRole.seller, [Permission.VIEW]),
+  orderController.getOrderForSeller,
+);
+
+orderRouter.get(
   "/order/:orderId",
   auth(UserRole.admin, [Permission.VIEW]),
   orderController.getOrderForAdmin,

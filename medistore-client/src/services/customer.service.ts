@@ -1,5 +1,6 @@
 import { env } from "@/env";
 import { TDeliveryAddress } from "@/form-schemas/delivery-address-form.schema";
+import { Treview } from "@/form-schemas/review-form.schema";
 import { IPaginationOptions, IQueryParams } from "@/types";
 import { IOrder } from "@/types/order";
 import { cookies } from "next/headers";
@@ -186,6 +187,47 @@ export const customerService = {
       const cookieStore = await cookies();
 
       const res = await fetch(`${API_URL}/customers/orders/order/create`, {
+        method: "POST",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+
+      const { success, message, data } = await res.json();
+
+      if (!success) {
+        return {
+          data: null,
+          success,
+          message,
+        };
+      }
+
+      return {
+        data,
+        success,
+        message,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  },
+
+  addReview: async function (payload: Treview) {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/reviews/review/add`, {
         method: "POST",
         headers: {
           Cookie: cookieStore.toString(),

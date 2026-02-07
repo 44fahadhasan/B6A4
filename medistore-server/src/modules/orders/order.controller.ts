@@ -72,6 +72,24 @@ const getOrderForCustomer = async (
   }
 };
 
+const getOrderForSeller = async (
+  req: Request<{ orderId: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await orderService.getOrderForSeller(req.params.orderId);
+
+    sendResponse(res, {
+      statusCode: 200,
+      message: "Order get!",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getOrderForAdmin = async (
   req: Request<{ orderId: string }>,
   res: Response,
@@ -164,6 +182,7 @@ export const orderController = {
   getOrdersForSeller,
   getOrdersForAdmin,
   getOrderForCustomer,
+  getOrderForSeller,
   getOrderForAdmin,
   createOrder,
   updateOrder,

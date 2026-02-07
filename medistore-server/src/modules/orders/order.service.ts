@@ -252,6 +252,30 @@ const getOrderForCustomer = async (orderId: string) => {
   return result;
 };
 
+const getOrderForSeller = async (orderId: string) => {
+  const result = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: {
+      _count: true,
+      deliveryAddress: true,
+      pharmacieOrders: {
+        include: {
+          orderItems: {
+            include: {
+              medicine: true,
+            },
+          },
+          payments: true,
+          reviews: true,
+        },
+      },
+      user: true,
+    },
+  });
+
+  return result;
+};
+
 const getOrderForAdmin = async (orderId: string) => {
   const result = await prisma.order.findUnique({
     where: { id: orderId },
@@ -437,6 +461,7 @@ export const orderService = {
   getOrdersForSeller,
   getOrdersForAdmin,
   getOrderForCustomer,
+  getOrderForSeller,
   getOrderForAdmin,
   createOrder,
   updateOrder,

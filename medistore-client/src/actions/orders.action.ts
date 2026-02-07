@@ -14,6 +14,11 @@ export async function getOrdersForSeller(params?: TOrderParams) {
   return res;
 }
 
+export async function getOrderForSeller(id: string) {
+  const res = await ordersService.getOrderForSeller(id);
+  return res;
+}
+
 export async function updatePharmacieOrder({
   id,
   payload,

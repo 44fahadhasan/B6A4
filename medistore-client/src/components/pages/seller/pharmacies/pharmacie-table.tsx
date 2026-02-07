@@ -40,8 +40,6 @@ export default async function PharmacyTable({
     );
   }
 
-  console.log(data?.pharmacies);
-
   return (
     <div className="space-y-5">
       <Pagination meta={data.meta} />

@@ -108,6 +108,46 @@ export const ordersService = {
     }
   },
 
+  getOrderForSeller: async function (id: string) {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/orders/order/seller/${id}`, {
+        method: "GET",
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        next: { tags: ["orders"] },
+      });
+
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+
+      const { success, message, data } = await res.json();
+
+      if (!success) {
+        return {
+          data: null,
+          success,
+          message,
+        };
+      }
+
+      return {
+        data,
+        success,
+        message,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        success: false,
+        message: (error as Error).message,
+      };
+    }
+  },
+
   updatePharmacieOrder: async function ({
     id,
     payload,

@@ -1,6 +1,7 @@
 "use server";
 
 import { TDeliveryAddress } from "@/form-schemas/delivery-address-form.schema";
+import { Treview } from "@/form-schemas/review-form.schema";
 import {
   customerService,
   IOrderQueryParams,
@@ -34,6 +35,16 @@ export async function createOrder(payload: IOrder) {
   if (res.success) {
     revalidateTag("orders", "max");
     revalidateTag("medicines", "max");
+  }
+
+  return res;
+}
+
+export async function addReview(payload: Treview) {
+  const res = await customerService.addReview(payload);
+
+  if (res.success) {
+    revalidateTag("reviews", "max");
   }
 
   return res;

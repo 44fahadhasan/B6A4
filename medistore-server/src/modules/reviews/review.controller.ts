@@ -38,7 +38,16 @@ const getReviewsForAdmin = async (
 
 const addReview = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = await reviewService.addReview(req.body);
+    const { user, body } = req;
+
+    if (!user?.id) {
+      throw new Error("User id is required");
+    }
+
+    const data = await reviewService.addReview({
+      ...body,
+      userId: user?.id,
+    });
 
     sendResponse(res, {
       statusCode: 201,
