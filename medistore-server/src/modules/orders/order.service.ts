@@ -191,6 +191,26 @@ const getOrdersForAdmin = async (req: Request) => {
                 },
               },
             },
+            {
+              user: {
+                email: {
+                  contains: search as string,
+                  mode: "insensitive",
+                },
+              },
+            },
+            {
+              pharmacieOrders: {
+                some: {
+                  pharmacie: {
+                    name: {
+                      contains: search as string,
+                      mode: "insensitive",
+                    },
+                  },
+                },
+              },
+            },
             {},
           ],
         }
@@ -206,9 +226,16 @@ const getOrdersForAdmin = async (req: Request) => {
       include: {
         pharmacieOrders: {
           include: {
-            _count: true,
+            pharmacie: true,
+            orderItems: {
+              include: {
+                medicine: true,
+              },
+            },
+            payments: true,
           },
         },
+        user: true,
       },
     }),
     prisma.order.count({ where }),
