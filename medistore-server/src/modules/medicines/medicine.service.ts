@@ -339,7 +339,7 @@ const getMedicinesForAdmin = async (req: Request) => {
 };
 
 const getMedicine = async (medicineId: string) => {
-  const medicine = await prisma.medicine.findUnique({
+  const medicine = await prisma.medicine.findUniqueOrThrow({
     where: {
       id: medicineId,
       status: "published",
@@ -386,8 +386,6 @@ const getMedicine = async (medicineId: string) => {
       },
     },
   });
-
-  if (!medicine) return null;
 
   const valid_stock_batch = medicine.inventories
     .filter((inv) => inv.stock > 0 && new Date(inv.expiryDate) > new Date())
