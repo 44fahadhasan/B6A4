@@ -8,6 +8,11 @@ import {
 } from "@/services/medicine.service";
 import { revalidateTag } from "next/cache";
 
+export async function getFeatureMedicines() {
+  const res = await medicineService.getFeatureMedicines();
+  return res;
+}
+
 export async function getMedicines(params?: IMedicineQueryParams) {
   const res = await medicineService.getMedicines(params);
   return res;
