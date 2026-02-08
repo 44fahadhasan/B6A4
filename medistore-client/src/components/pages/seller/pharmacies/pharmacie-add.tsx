@@ -41,7 +41,14 @@ export default function AddPharmacy() {
       try {
         const { success, message } = await createPharmacie(value);
 
-        if (!success) return toast.error(message, { id });
+        if (!success) {
+          const errMsg =
+            message === "Duplicate record exists. Please provide unique values."
+              ? "Demo allows only one pharmacy."
+              : message;
+
+          return toast.error(errMsg, { id });
+        }
 
         toast.success(message, { id });
         form.reset();
