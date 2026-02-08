@@ -24,7 +24,7 @@ export default function MedicineFilters({ className }: { className?: string }) {
     <Card className={cn("px-5 space-y-5", className)}>
       <InputSearch
         paramName="search"
-        placeholder="Search by medicine or generic name…"
+        placeholder="Search by medicine, generic name  or manufacturer…"
       />
       <RangeSearch min={0} max={10000} step={10} />
       <div className="space-y-3">

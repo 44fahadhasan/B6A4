@@ -26,6 +26,12 @@ const getMedicines = async (req: Request) => {
                 mode: "insensitive",
               },
             },
+            {
+              manufacturer: {
+                contains: search as string,
+                mode: "insensitive",
+              },
+            },
           ],
         }
       : {}),
