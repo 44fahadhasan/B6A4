@@ -14,31 +14,32 @@ export default function globalError(
   let message = "Internal server error";
   let data: any = null;
 
+  // Prisma Known Errors (P2000 - P2025)
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {
       case "P2000":
         statusCode = 400;
-        message = "Input value is too long for the field";
+        message = "Input value is too long";
         break;
 
       case "P2001":
         statusCode = 404;
-        message = "Record does not exist";
+        message = "Record not found";
         break;
 
       case "P2002":
         statusCode = 409;
-        message = "Duplicate record exists. Please provide unique values.";
+        message = "Duplicate record exists";
         break;
 
       case "P2003":
         statusCode = 400;
-        message = "Invalid relation. Foreign key constraint failed";
+        message = "Invalid relation";
         break;
 
       case "P2004":
         statusCode = 400;
-        message = "A database constraint failed";
+        message = "Database constraint failed";
         break;
 
       case "P2011":
@@ -48,7 +49,7 @@ export default function globalError(
 
       case "P2012":
         statusCode = 400;
-        message = "Missing required value";
+        message = "Missing required field";
         break;
 
       case "P2014":
@@ -63,24 +64,48 @@ export default function globalError(
 
       default:
         statusCode = 400;
-        message = err.message;
+        message = "Invalid database request";
         break;
     }
-  } else if (err instanceof Prisma.PrismaClientValidationError) {
+  }
+
+  // Prisma Transaction Timeout / Pool Exhausted
+  else if (
+    typeof err?.message === "string" &&
+    err.message.includes("Unable to start a transaction")
+  ) {
+    statusCode = 503;
+    message = "Database is busy. Please try again shortly.";
+  }
+
+  // Prisma Validation Error
+  else if (err instanceof Prisma.PrismaClientValidationError) {
     statusCode = 400;
     message = "Invalid input data";
     data = err.message;
-  } else if (err instanceof Prisma.PrismaClientInitializationError) {
+  }
+
+  // Prisma Connection Error
+  else if (err instanceof Prisma.PrismaClientInitializationError) {
     statusCode = 500;
     message = "Database connection failed";
-  } else if (err instanceof Prisma.PrismaClientRustPanicError) {
+  }
+
+  // Prisma Engine Crash
+  else if (err instanceof Prisma.PrismaClientRustPanicError) {
     statusCode = 500;
     message = "Critical database engine error";
-  } else if (err.statusCode) {
+  }
+
+  // Custom App Errors
+  else if (err.statusCode) {
     statusCode = err.statusCode;
     message = err.message;
     data = err.data || null;
-  } else if (err instanceof Error) {
+  }
+
+  // Generic JS Error
+  else if (err instanceof Error) {
     message = err.message;
   }
 
