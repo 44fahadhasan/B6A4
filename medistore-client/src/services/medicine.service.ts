@@ -26,10 +26,6 @@ export const medicineService = {
         cache: "force-cache",
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -75,10 +71,6 @@ export const medicineService = {
         cache: "force-cache",
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -112,10 +104,6 @@ export const medicineService = {
         },
         cache: "force-cache",
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -163,10 +151,6 @@ export const medicineService = {
         next: { tags: ["medicines"] },
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -213,10 +197,6 @@ export const medicineService = {
         next: { tags: ["medicines"] },
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -253,10 +233,6 @@ export const medicineService = {
         },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -301,10 +277,6 @@ export const medicineService = {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -339,10 +311,6 @@ export const medicineService = {
           Cookie: cookieStore.toString(),
         },
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 

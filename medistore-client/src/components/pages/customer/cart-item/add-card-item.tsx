@@ -34,7 +34,10 @@ export default function AddCartItem({
       });
 
       if (!success) {
-        return toast.error(message, { id });
+        const errMsg =
+          message === "Unauthorized" ? "Please sign in to continue." : message;
+
+        return toast.error(errMsg, { id });
       }
 
       setCartAction((pre) => !pre);

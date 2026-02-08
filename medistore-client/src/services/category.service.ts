@@ -30,10 +30,6 @@ export const categoryService = {
         next: { tags: ["categories"] },
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -64,10 +60,6 @@ export const categoryService = {
         method: "GET",
         next: { tags: ["categories"] },
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -105,10 +97,6 @@ export const categoryService = {
         },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -153,10 +141,6 @@ export const categoryService = {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -191,10 +175,6 @@ export const categoryService = {
           Cookie: cookieStore.toString(),
         },
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 

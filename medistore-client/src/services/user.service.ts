@@ -15,10 +15,6 @@ export const userService = {
         cache: "no-store",
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const result = await res.json();
 
       if (!result) {

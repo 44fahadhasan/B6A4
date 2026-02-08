@@ -30,10 +30,6 @@ export const ordersService = {
         next: { tags: ["orders"] },
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -80,10 +76,6 @@ export const ordersService = {
         next: { tags: ["orders"] },
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -119,10 +111,6 @@ export const ordersService = {
         },
         next: { tags: ["orders"] },
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -166,10 +154,6 @@ export const ordersService = {
         },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 

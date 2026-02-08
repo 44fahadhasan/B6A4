@@ -23,10 +23,6 @@ export const customerService = {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -61,10 +57,6 @@ export const customerService = {
           Cookie: cookieStore.toString(),
         },
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -115,10 +107,6 @@ export const customerService = {
         cache: "force-cache",
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -153,10 +141,6 @@ export const customerService = {
           Cookie: cookieStore.toString(),
         },
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -195,10 +179,6 @@ export const customerService = {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -235,10 +215,6 @@ export const customerService = {
         },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 

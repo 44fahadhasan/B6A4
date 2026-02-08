@@ -4,6 +4,7 @@ import express from "express";
 import config from "./config";
 import corsOptions from "./config/cors";
 import { auth } from "./lib/auth";
+import globalError from "./middlewares/global-error.middleware";
 import rootRouter from "./routes";
 
 const app = express();
@@ -20,5 +21,7 @@ app.get("/", (_, res) => {
   res.send(`Welcome to the ${config.site_name}`);
 });
 app.use("/api", rootRouter);
+
+app.use(globalError);
 
 export default app;

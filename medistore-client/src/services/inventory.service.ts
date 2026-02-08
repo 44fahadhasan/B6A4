@@ -33,10 +33,6 @@ export const inventoryService = {
         next: { tags: ["inventories"] },
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -73,10 +69,6 @@ export const inventoryService = {
         },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -121,10 +113,6 @@ export const inventoryService = {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -159,10 +147,6 @@ export const inventoryService = {
           Cookie: cookieStore.toString(),
         },
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 

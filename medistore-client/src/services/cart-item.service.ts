@@ -20,10 +20,6 @@ export const cartitemService = {
         next: { tags: ["carts"] },
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -60,10 +56,6 @@ export const cartitemService = {
         },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
@@ -103,10 +95,6 @@ export const cartitemService = {
         },
       );
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-
       const { success, message, data } = await res.json();
 
       if (!success) {
@@ -143,10 +131,6 @@ export const cartitemService = {
         },
         body: JSON.stringify(ids),
       });
-
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
 
       const { success, message, data } = await res.json();
 
