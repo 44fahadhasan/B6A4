@@ -9,8 +9,4 @@ export const customerNavs: INavItem[] = [
     label: "My Orders",
     path: "/my-orders",
   },
-  {
-    label: "My Account",
-    path: "/my-account",
-  },
 ];

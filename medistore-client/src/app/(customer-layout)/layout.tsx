@@ -10,7 +10,7 @@ export default function CustomerLayout({
   return (
     <>
       <Header />
-      <div className="min-h-[calc(100vh-106px)] py-8 md:py-10 lg:py-14 flex gap-5">
+      <div className="max-w-7xl px-5 mx-auto min-h-[calc(100vh-106px)] py-8 md:py-10 lg:py-14 flex gap-5">
         <CustomerTab />
         <div className="grow">{children}</div>
       </div>
