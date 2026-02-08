@@ -43,7 +43,7 @@ export default function AddPharmacy() {
 
         if (!success) {
           const errMsg =
-            message === "Duplicate record exists. Please provide unique values."
+            message === "Duplicate record exists"
               ? "Demo allows only one pharmacy."
               : message;
 

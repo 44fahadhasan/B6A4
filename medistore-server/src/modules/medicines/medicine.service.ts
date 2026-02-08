@@ -164,7 +164,7 @@ const getMedicinesForSeller = async (req: Request) => {
   const { page, limit, skip, orderBy, order } = paginationOptions(req);
 
   if (!req.user?.pharmacieId) {
-    throw new Error("Pharmacie id is required");
+    throw new Error("Please add at least one pharmacy to continue.");
   }
 
   const where: MedicineWhereInput = {

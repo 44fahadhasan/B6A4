@@ -98,7 +98,7 @@ const createMedicine = async (
     const { user, body } = req;
 
     if (!user?.pharmacieId) {
-      throw new Error("Pharmacie id is required");
+      throw new Error("Please add at least one pharmacy to continue.");
     }
 
     const data = await medicineService.createMedicine({
