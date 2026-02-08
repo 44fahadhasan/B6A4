@@ -76,6 +76,7 @@ const getOrdersForSeller = async (req: Request) => {
   }
 
   const where: PharmacieOrderWhereInput = {
+    pharmacieId: user.pharmacieId,
     ...(status && OrderStatus.includes(status as string)
       ? { status: status as TOrderStatus }
       : {}),
@@ -279,13 +280,16 @@ const getOrderForCustomer = async (orderId: string) => {
   return result;
 };
 
-const getOrderForSeller = async (orderId: string) => {
+const getOrderForSeller = async (orderId: string, pharmacieId: string) => {
   const result = await prisma.order.findUnique({
     where: { id: orderId },
     include: {
       _count: true,
       deliveryAddress: true,
       pharmacieOrders: {
+        where: {
+          pharmacieId,
+        },
         include: {
           orderItems: {
             include: {

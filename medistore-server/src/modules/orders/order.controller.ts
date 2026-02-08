@@ -78,7 +78,16 @@ const getOrderForSeller = async (
   next: NextFunction,
 ) => {
   try {
-    const data = await orderService.getOrderForSeller(req.params.orderId);
+    const { user } = req;
+
+    if (!user?.pharmacieId) {
+      throw new Error("Pharmacy id is required.");
+    }
+
+    const data = await orderService.getOrderForSeller(
+      req.params.orderId,
+      user?.pharmacieId,
+    );
 
     sendResponse(res, {
       statusCode: 200,
