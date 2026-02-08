@@ -39,7 +39,6 @@ export default function AddCartItem({
 
         return toast.error(errMsg, { id });
       }
-
       setCartAction((pre) => !pre);
       toast.success(message, { id });
     } catch (error) {
