@@ -104,13 +104,13 @@ export default async function MyOrderTable({
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    ${order.totalAmount.toFixed(2)}
+                    ৳{order.totalAmount.toFixed(2)}
                   </TableCell>
                   <TableCell className="text-right">
-                    ${order.tax.toFixed(2)}
+                    ৳{order.tax.toFixed(2)}
                   </TableCell>
                   <TableCell className="text-right font-semibold">
-                    ${order.grandTotal.toFixed(2)}
+                    ৳{order.grandTotal.toFixed(2)}
                   </TableCell>
                   <TableCell className="text-center">
                     <DetailsMyOrder orderId={order.id} />

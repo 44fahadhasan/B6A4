@@ -333,26 +333,35 @@ const getMedicinesForAdmin = async (req: Request) => {
 };
 
 const getMedicine = async (medicineId: string) => {
-  const result = await prisma.medicine.findUnique({
+  const medicine = await prisma.medicine.findUnique({
     where: {
       id: medicineId,
       status: "published",
     },
     include: {
+      pharmacie: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
       categorie: {
         select: {
           name: true,
           slug: true,
-          description: true,
-          image: true,
         },
       },
       inventories: {
         select: {
+          id: true,
+          batchNumber: true,
           mrp: true,
           sellingPrice: true,
           discount: true,
+          stock: true,
           minStock: true,
+          reservedQty: true,
           expiryDate: true,
         },
       },
@@ -360,6 +369,7 @@ const getMedicine = async (medicineId: string) => {
         select: {
           rating: true,
           comment: true,
+          createdAt: true,
           user: {
             select: {
               name: true,
@@ -368,16 +378,47 @@ const getMedicine = async (medicineId: string) => {
           },
         },
       },
-      pharmacie: {
-        select: {
-          name: true,
-          slug: true,
-          image: true,
-        },
-      },
     },
   });
-  return result;
+
+  if (!medicine) return null;
+
+  const valid_stock_batch = medicine.inventories
+    .filter((inv) => inv.stock > 0 && new Date(inv.expiryDate) > new Date())
+    .sort(
+      (a, b) =>
+        new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime(),
+    );
+
+  const total_stock = valid_stock_batch.reduce(
+    (sum, inv) => sum + (inv.stock - inv.reservedQty),
+    0,
+  );
+
+  const active_batch = valid_stock_batch.at(0) ?? null;
+
+  return {
+    id: medicine.id,
+    name: medicine.name,
+    slug: medicine.slug,
+    genericName: medicine.genericName,
+    manufacturer: medicine.manufacturer,
+    dosageForm: medicine.dosageForm,
+    strength: medicine.strength,
+    categorie: medicine.categorie,
+    pharmacie: medicine.pharmacie,
+    reviews: medicine.reviews,
+    isOutOfStock: total_stock <= 0,
+    stock: active_batch
+      ? {
+          mrp: active_batch.mrp,
+          availableQty: total_stock,
+          discount: active_batch.discount,
+          expiryDate: active_batch.expiryDate,
+          sellingPrice: active_batch.sellingPrice,
+        }
+      : null,
+  };
 };
 
 const getMedicineForAdmin = async (medicineId: string) => {

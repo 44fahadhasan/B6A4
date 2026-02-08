@@ -13,6 +13,11 @@ export async function getMedicines(params?: IMedicineQueryParams) {
   return res;
 }
 
+export async function getMedicine(id: string) {
+  const res = await medicineService.getMedicine(id);
+  return res;
+}
+
 export async function getMedicinesForAdmin(params?: TMedicineParams) {
   const res = await medicineService.getMedicinesForAdmin(params);
   return res;
