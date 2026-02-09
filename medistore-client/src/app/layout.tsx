@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main>{children}</main>
+          <main className="max-w-7xl mx-auto">{children}</main>
           <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
