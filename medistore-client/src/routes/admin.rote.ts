@@ -28,4 +28,8 @@ export const adminSidebarMenus: ISidebarMenu[] = [
     title: "Users",
     url: "/dashboard/users",
   },
+  {
+    title: "Home",
+    url: "/",
+  },
 ];

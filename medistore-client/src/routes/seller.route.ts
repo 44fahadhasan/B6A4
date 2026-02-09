@@ -24,4 +24,8 @@ export const sellerSidebarMenus: ISidebarMenu[] = [
     title: "Orders",
     url: "/dashboard/orders",
   },
+  {
+    title: "Home",
+    url: "/",
+  },
 ];
