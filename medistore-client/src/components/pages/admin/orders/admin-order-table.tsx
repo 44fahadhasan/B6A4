@@ -72,84 +72,107 @@ export default async function AdminOrderTable({
                 </TableCell>
               </TableRow>
             ) : (
-              data.orders.map((orderData: any, idx: number) => {
-                const phOrder = orderData.pharmacieOrders[0] || {};
-                const items = phOrder.orderItems || [];
-                const totalQty = items.reduce(
-                  (sum: number, i: any) => sum + i.quantity,
-                  0,
-                );
-                return (
-                  <TableRow key={orderData.id}>
-                    <TableCell>{idx + 1}</TableCell>
-                    <TableCell className="font-medium">
-                      {orderData.orderNumber}
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{orderData.user.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {orderData.user.email}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">
-                          {phOrder.pharmacie?.name || "-"}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {phOrder.pharmacie?.email || "-"}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-1 text-sm">
-                        {items.slice(0, 2).map((item: any, i: number) => (
-                          <p key={i}>
-                            {item.medicine.name} × {item.quantity}
-                          </p>
-                        ))}
-                        {items.length > 2 && (
+              data.orders
+                .flatMap((orderData: any) =>
+                  orderData.pharmacieOrders.map((phOrder: any) => {
+                    const items = phOrder.orderItems || [];
+                    const totalQty = items.reduce(
+                      (sum: number, i: any) => sum + i.quantity,
+                      0,
+                    );
+                    return {
+                      orderData,
+                      phOrder,
+                      items,
+                      totalQty,
+                    };
+                  }),
+                )
+                .map(
+                  (
+                    {
+                      orderData,
+                      phOrder,
+                      items,
+                      totalQty,
+                    }: {
+                      orderData: any;
+                      phOrder: any;
+                      items: any[];
+                      totalQty: number;
+                    },
+                    idx: number,
+                  ) => (
+                    <TableRow key={phOrder.id}>
+                      <TableCell>{idx + 1}</TableCell>
+                      <TableCell className="font-medium">
+                        {orderData.orderNumber}
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">{orderData.user.name}</p>
                           <p className="text-xs text-muted-foreground">
-                            +{items.length - 2} more
+                            {orderData.user.email}
                           </p>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-center">{totalQty}</TableCell>
-                    <TableCell className="text-right font-semibold">
-                      ৳ {orderData.grandTotal}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        className="capitalize"
-                        variant={
-                          phOrder.status === "pending"
-                            ? "secondary"
-                            : phOrder.status === "confirmed"
-                              ? "default"
-                              : phOrder.status === "shipped"
-                                ? "outline"
-                                : phOrder.status === "delivered"
-                                  ? "ghost"
-                                  : "destructive"
-                        }
-                      >
-                        {phOrder.status || "-"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className="capitalize" variant="outline">
-                        {orderData.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {new Date(orderData.createdAt).toLocaleDateString()}
-                    </TableCell>
-                  </TableRow>
-                );
-              })
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">
+                            {phOrder.pharmacie?.name || "-"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {phOrder.pharmacie?.email || "-"}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1 text-sm">
+                          {items.slice(0, 2).map((item: any, i: number) => (
+                            <p key={i}>
+                              {item.medicine.name} × {item.quantity}
+                            </p>
+                          ))}
+                          {items.length > 2 && (
+                            <p className="text-xs text-muted-foreground">
+                              +{items.length - 2} more
+                            </p>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">{totalQty}</TableCell>
+                      <TableCell className="text-right font-semibold">
+                        ৳ {phOrder.subtotal}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          className="capitalize"
+                          variant={
+                            phOrder.status === "pending"
+                              ? "secondary"
+                              : phOrder.status === "confirmed"
+                                ? "default"
+                                : phOrder.status === "shipped"
+                                  ? "outline"
+                                  : phOrder.status === "delivered"
+                                    ? "ghost"
+                                    : "destructive"
+                          }
+                        >
+                          {phOrder.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className="capitalize" variant="outline">
+                          {orderData.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {new Date(orderData.createdAt).toLocaleDateString()}
+                      </TableCell>
+                    </TableRow>
+                  ),
+                )
             )}
           </TableBody>
         </Table>
