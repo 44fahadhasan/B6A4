@@ -8,6 +8,7 @@ import orderRouter from "../../modules/orders/order.route";
 import pharmacieRouter from "../../modules/pharmacies/pharmacie.route";
 import reviewRouter from "../../modules/reviews/review.route";
 import sellerRouter from "../../modules/sellers/seller.route";
+import statRouter from "../../modules/stats/stat.route";
 
 interface IModuleRouter {
   path: string;
@@ -29,6 +30,7 @@ const moduleRouters: IModuleRouter[] = [
   { path: "/inventories", router: inventoryRouter },
   { path: "/orders", router: orderRouter },
   { path: "/reviews", router: reviewRouter },
+  { path: "/stats", router: statRouter },
 ];
 
 moduleRouters.forEach(({ path, router }) => v1Router.use(path, router));

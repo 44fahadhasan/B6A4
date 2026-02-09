@@ -81,7 +81,7 @@ const getOrderForSeller = async (
     const { user } = req;
 
     if (!user?.pharmacieId) {
-      throw new Error("Pharmacy id is required.");
+      throw new Error("Please add at least one pharmacy to continue.");
     }
 
     const data = await orderService.getOrderForSeller(
