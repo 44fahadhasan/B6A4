@@ -12,9 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { deliveryAddressFormSchema } from "@/form-schemas/delivery-address-form.schema";
 import { useForm } from "@tanstack/react-form";
+import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-export default function MangeDeliveryAddress() {
+export default function MangeDeliveryAddress({
+  setRefetchFlag,
+}: {
+  setRefetchFlag: Dispatch<SetStateAction<boolean>>;
+}) {
   const formId = "delivery-address-mange";
 
   const form = useForm({
@@ -40,6 +45,7 @@ export default function MangeDeliveryAddress() {
 
         if (!success) return toast.error(message, { id });
 
+        setRefetchFlag((pre: boolean) => !pre);
         toast.success(message, { id });
         form.reset();
       } catch {

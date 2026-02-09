@@ -4,18 +4,21 @@ import { Badge } from "@/components/ui/badge";
 import { TDeliveryAddress } from "@/form-schemas/delivery-address-form.schema";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, MapPin, Phone } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 import MangeDeliveryAddress from "../mange-delivery-address";
 
 interface SelectDeliveryAddressProps {
   addresses: (TDeliveryAddress & { id: string })[];
   selectedId: string | null;
   setSelectedId: (id: string) => void;
+  setRefetchFlag: Dispatch<SetStateAction<boolean>>;
 }
 
 const SelectDeliveryAddress = ({
   addresses,
   selectedId,
   setSelectedId,
+  setRefetchFlag,
 }: SelectDeliveryAddressProps) => {
   return (
     <div className="space-y-3 max-h-87.5 overflow-y-auto no-scrollbar">
@@ -67,7 +70,7 @@ const SelectDeliveryAddress = ({
         <div className="text-center py-8 space-y-3 text-muted-foreground">
           <p>No delivery address found.</p>
           <p>Please add one from your profile.</p>
-          <MangeDeliveryAddress />
+          <MangeDeliveryAddress setRefetchFlag={setRefetchFlag} />
         </div>
       )}
     </div>

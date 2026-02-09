@@ -23,6 +23,7 @@ type DeliveryAddressWithId = TDeliveryAddress & { id: string };
 export function AddOrder() {
   const [addresses, setAddresses] = useState<DeliveryAddressWithId[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [refetchFlag, setRefetchFlag] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -38,7 +39,7 @@ export function AddOrder() {
         if (defaultAddress) setSelectedId(defaultAddress.id);
       }
     })();
-  }, []);
+  }, [refetchFlag]);
 
   const handleAddOrder = async () => {
     if (!selectedId) {
@@ -86,6 +87,7 @@ export function AddOrder() {
           addresses={addresses}
           selectedId={selectedId}
           setSelectedId={setSelectedId}
+          setRefetchFlag={setRefetchFlag}
         />
         <SelectPaymentMethod />
         <DialogFooter className="mt-4">
