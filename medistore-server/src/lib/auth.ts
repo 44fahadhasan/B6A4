@@ -18,7 +18,16 @@ export const auth = betterAuth({
   baseURL: config.better_auth_url,
   basePath: config.better_auth_path,
   trustedOrigins: allowedOrigins,
-  advanced: { cookiePrefix: config.site_name },
+  advanced: {
+    cookiePrefix: config.site_name.toLocaleLowerCase(),
+    defaultCookieAttributes: {
+      path: "/",
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+      domain: config.better_auth_url!,
+    },
+  },
   emailAndPassword: { enabled: true, autoSignIn: false },
   user: {
     additionalFields: {
