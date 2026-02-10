@@ -25,7 +25,6 @@ export const auth = betterAuth({
       secure: true,
       httpOnly: true,
       sameSite: "none",
-      domain: config.better_auth_url!,
     },
   },
   emailAndPassword: { enabled: true, autoSignIn: false },
