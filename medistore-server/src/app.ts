@@ -5,6 +5,7 @@ import config from "./config";
 import corsOptions from "./config/cors";
 import { auth } from "./lib/auth";
 import globalError from "./middlewares/global-error.middleware";
+import { notFound } from "./middlewares/not-found.middleware";
 import rootRouter from "./routes";
 
 const app = express();
@@ -22,6 +23,7 @@ app.get("/", (_, res) => {
 });
 app.use("/api", rootRouter);
 
+app.use(notFound);
 app.use(globalError);
 
 export default app;
